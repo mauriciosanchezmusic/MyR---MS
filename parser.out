@@ -1,0 +1,2254 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    CHARV
+    COMMENT
+    STRING
+
+Grammar
+
+Rule 0     S' -> statement
+Rule 1     statement -> command NEWLINE
+Rule 2     statement -> ID EQ expression
+Rule 3     statement -> expression
+Rule 4     command -> INT variable
+Rule 5     command -> FLOAT variable
+Rule 6     command -> CHAR variable
+Rule 7     expression -> LPARENT expression RPARENT
+Rule 8     expression -> INTEGER
+Rule 9     expression -> FLOATV
+Rule 10    expression -> ID
+Rule 11    expression -> expression PLUS expression
+Rule 12    expression -> expression MINUS expression
+Rule 13    expression -> expression TIMES expression
+Rule 14    expression -> expression DIVIDE expression
+Rule 15    expression -> expression POWER expression
+Rule 16    expression -> MINUS expression
+Rule 17    expression -> expression LT expression
+Rule 18    expression -> expression LTE expression
+Rule 19    expression -> expression GT expression
+Rule 20    expression -> expression GTE expression
+Rule 21    expression -> expression SIM expression
+Rule 22    expression -> expression NE expression
+Rule 23    expression -> IF expression THEN expression
+Rule 24    expression -> IF expression THEN expression ELSE expression
+Rule 25    expression -> FOR expression TO expression DO expression
+Rule 26    expression -> WHILE expression DO expression
+Rule 27    variable -> ID
+
+Terminals, with rules where they appear
+
+CHAR                 : 6
+CHARV                : 
+COMMENT              : 
+DIVIDE               : 14
+DO                   : 25 26
+ELSE                 : 24
+EQ                   : 2
+FLOAT                : 5
+FLOATV               : 9
+FOR                  : 25
+GT                   : 19
+GTE                  : 20
+ID                   : 2 10 27
+IF                   : 23 24
+INT                  : 4
+INTEGER              : 8
+LPARENT              : 7
+LT                   : 17
+LTE                  : 18
+MINUS                : 12 16
+NE                   : 22
+NEWLINE              : 1
+PLUS                 : 11
+POWER                : 15
+RPARENT              : 7
+SIM                  : 21
+STRING               : 
+THEN                 : 23 24
+TIMES                : 13
+TO                   : 25
+WHILE                : 26
+error                : 
+
+Nonterminals, with rules where they appear
+
+command              : 1
+expression           : 2 3 7 11 11 12 12 13 13 14 14 15 15 16 17 17 18 18 19 19 20 20 21 21 22 22 23 23 24 24 24 25 25 25 26 26
+statement            : 0
+variable             : 4 5 6
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . statement
+    (1) statement -> . command NEWLINE
+    (2) statement -> . ID EQ expression
+    (3) statement -> . expression
+    (4) command -> . INT variable
+    (5) command -> . FLOAT variable
+    (6) command -> . CHAR variable
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    ID              shift and go to state 3
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    CHAR            shift and go to state 7
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    statement                      shift and go to state 1
+    command                        shift and go to state 2
+    expression                     shift and go to state 4
+
+state 1
+
+    (0) S' -> statement .
+
+
+
+state 2
+
+    (1) statement -> command . NEWLINE
+
+    NEWLINE         shift and go to state 15
+
+
+state 3
+
+    (2) statement -> ID . EQ expression
+    (10) expression -> ID .
+
+    EQ              shift and go to state 16
+    PLUS            reduce using rule 10 (expression -> ID .)
+    MINUS           reduce using rule 10 (expression -> ID .)
+    TIMES           reduce using rule 10 (expression -> ID .)
+    DIVIDE          reduce using rule 10 (expression -> ID .)
+    POWER           reduce using rule 10 (expression -> ID .)
+    LT              reduce using rule 10 (expression -> ID .)
+    LTE             reduce using rule 10 (expression -> ID .)
+    GT              reduce using rule 10 (expression -> ID .)
+    GTE             reduce using rule 10 (expression -> ID .)
+    SIM             reduce using rule 10 (expression -> ID .)
+    NE              reduce using rule 10 (expression -> ID .)
+    $end            reduce using rule 10 (expression -> ID .)
+
+
+state 4
+
+    (3) statement -> expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+    $end            reduce using rule 3 (statement -> expression .)
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+
+state 5
+
+    (4) command -> INT . variable
+    (27) variable -> . ID
+
+    ID              shift and go to state 29
+
+    variable                       shift and go to state 28
+
+state 6
+
+    (5) command -> FLOAT . variable
+    (27) variable -> . ID
+
+    ID              shift and go to state 29
+
+    variable                       shift and go to state 30
+
+state 7
+
+    (6) command -> CHAR . variable
+    (27) variable -> . ID
+
+    ID              shift and go to state 29
+
+    variable                       shift and go to state 31
+
+state 8
+
+    (7) expression -> LPARENT . expression RPARENT
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 32
+
+state 9
+
+    (8) expression -> INTEGER .
+
+    PLUS            reduce using rule 8 (expression -> INTEGER .)
+    MINUS           reduce using rule 8 (expression -> INTEGER .)
+    TIMES           reduce using rule 8 (expression -> INTEGER .)
+    DIVIDE          reduce using rule 8 (expression -> INTEGER .)
+    POWER           reduce using rule 8 (expression -> INTEGER .)
+    LT              reduce using rule 8 (expression -> INTEGER .)
+    LTE             reduce using rule 8 (expression -> INTEGER .)
+    GT              reduce using rule 8 (expression -> INTEGER .)
+    GTE             reduce using rule 8 (expression -> INTEGER .)
+    SIM             reduce using rule 8 (expression -> INTEGER .)
+    NE              reduce using rule 8 (expression -> INTEGER .)
+    $end            reduce using rule 8 (expression -> INTEGER .)
+    RPARENT         reduce using rule 8 (expression -> INTEGER .)
+    THEN            reduce using rule 8 (expression -> INTEGER .)
+    TO              reduce using rule 8 (expression -> INTEGER .)
+    DO              reduce using rule 8 (expression -> INTEGER .)
+    ELSE            reduce using rule 8 (expression -> INTEGER .)
+
+
+state 10
+
+    (9) expression -> FLOATV .
+
+    PLUS            reduce using rule 9 (expression -> FLOATV .)
+    MINUS           reduce using rule 9 (expression -> FLOATV .)
+    TIMES           reduce using rule 9 (expression -> FLOATV .)
+    DIVIDE          reduce using rule 9 (expression -> FLOATV .)
+    POWER           reduce using rule 9 (expression -> FLOATV .)
+    LT              reduce using rule 9 (expression -> FLOATV .)
+    LTE             reduce using rule 9 (expression -> FLOATV .)
+    GT              reduce using rule 9 (expression -> FLOATV .)
+    GTE             reduce using rule 9 (expression -> FLOATV .)
+    SIM             reduce using rule 9 (expression -> FLOATV .)
+    NE              reduce using rule 9 (expression -> FLOATV .)
+    $end            reduce using rule 9 (expression -> FLOATV .)
+    RPARENT         reduce using rule 9 (expression -> FLOATV .)
+    THEN            reduce using rule 9 (expression -> FLOATV .)
+    TO              reduce using rule 9 (expression -> FLOATV .)
+    DO              reduce using rule 9 (expression -> FLOATV .)
+    ELSE            reduce using rule 9 (expression -> FLOATV .)
+
+
+state 11
+
+    (16) expression -> MINUS . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 34
+
+state 12
+
+    (23) expression -> IF . expression THEN expression
+    (24) expression -> IF . expression THEN expression ELSE expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 35
+
+state 13
+
+    (25) expression -> FOR . expression TO expression DO expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 36
+
+state 14
+
+    (26) expression -> WHILE . expression DO expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 37
+
+state 15
+
+    (1) statement -> command NEWLINE .
+
+    $end            reduce using rule 1 (statement -> command NEWLINE .)
+
+
+state 16
+
+    (2) statement -> ID EQ . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 38
+
+state 17
+
+    (11) expression -> expression PLUS . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 39
+
+state 18
+
+    (12) expression -> expression MINUS . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 40
+
+state 19
+
+    (13) expression -> expression TIMES . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 41
+
+state 20
+
+    (14) expression -> expression DIVIDE . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 42
+
+state 21
+
+    (15) expression -> expression POWER . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 43
+
+state 22
+
+    (17) expression -> expression LT . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 44
+
+state 23
+
+    (18) expression -> expression LTE . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 45
+
+state 24
+
+    (19) expression -> expression GT . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 46
+
+state 25
+
+    (20) expression -> expression GTE . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 47
+
+state 26
+
+    (21) expression -> expression SIM . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 48
+
+state 27
+
+    (22) expression -> expression NE . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 49
+
+state 28
+
+    (4) command -> INT variable .
+
+    NEWLINE         reduce using rule 4 (command -> INT variable .)
+
+
+state 29
+
+    (27) variable -> ID .
+
+    NEWLINE         reduce using rule 27 (variable -> ID .)
+
+
+state 30
+
+    (5) command -> FLOAT variable .
+
+    NEWLINE         reduce using rule 5 (command -> FLOAT variable .)
+
+
+state 31
+
+    (6) command -> CHAR variable .
+
+    NEWLINE         reduce using rule 6 (command -> CHAR variable .)
+
+
+state 32
+
+    (7) expression -> LPARENT expression . RPARENT
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+    RPARENT         shift and go to state 50
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+
+state 33
+
+    (10) expression -> ID .
+
+    RPARENT         reduce using rule 10 (expression -> ID .)
+    PLUS            reduce using rule 10 (expression -> ID .)
+    MINUS           reduce using rule 10 (expression -> ID .)
+    TIMES           reduce using rule 10 (expression -> ID .)
+    DIVIDE          reduce using rule 10 (expression -> ID .)
+    POWER           reduce using rule 10 (expression -> ID .)
+    LT              reduce using rule 10 (expression -> ID .)
+    LTE             reduce using rule 10 (expression -> ID .)
+    GT              reduce using rule 10 (expression -> ID .)
+    GTE             reduce using rule 10 (expression -> ID .)
+    SIM             reduce using rule 10 (expression -> ID .)
+    NE              reduce using rule 10 (expression -> ID .)
+    $end            reduce using rule 10 (expression -> ID .)
+    THEN            reduce using rule 10 (expression -> ID .)
+    TO              reduce using rule 10 (expression -> ID .)
+    DO              reduce using rule 10 (expression -> ID .)
+    ELSE            reduce using rule 10 (expression -> ID .)
+
+
+state 34
+
+    (16) expression -> MINUS expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+    PLUS            reduce using rule 16 (expression -> MINUS expression .)
+    MINUS           reduce using rule 16 (expression -> MINUS expression .)
+    LT              reduce using rule 16 (expression -> MINUS expression .)
+    LTE             reduce using rule 16 (expression -> MINUS expression .)
+    GT              reduce using rule 16 (expression -> MINUS expression .)
+    GTE             reduce using rule 16 (expression -> MINUS expression .)
+    SIM             reduce using rule 16 (expression -> MINUS expression .)
+    NE              reduce using rule 16 (expression -> MINUS expression .)
+    $end            reduce using rule 16 (expression -> MINUS expression .)
+    RPARENT         reduce using rule 16 (expression -> MINUS expression .)
+    THEN            reduce using rule 16 (expression -> MINUS expression .)
+    TO              reduce using rule 16 (expression -> MINUS expression .)
+    DO              reduce using rule 16 (expression -> MINUS expression .)
+    ELSE            reduce using rule 16 (expression -> MINUS expression .)
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+
+  ! TIMES           [ reduce using rule 16 (expression -> MINUS expression .) ]
+  ! DIVIDE          [ reduce using rule 16 (expression -> MINUS expression .) ]
+  ! POWER           [ reduce using rule 16 (expression -> MINUS expression .) ]
+  ! PLUS            [ shift and go to state 17 ]
+  ! MINUS           [ shift and go to state 18 ]
+  ! LT              [ shift and go to state 22 ]
+  ! LTE             [ shift and go to state 23 ]
+  ! GT              [ shift and go to state 24 ]
+  ! GTE             [ shift and go to state 25 ]
+  ! SIM             [ shift and go to state 26 ]
+  ! NE              [ shift and go to state 27 ]
+
+
+state 35
+
+    (23) expression -> IF expression . THEN expression
+    (24) expression -> IF expression . THEN expression ELSE expression
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+    THEN            shift and go to state 51
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+
+state 36
+
+    (25) expression -> FOR expression . TO expression DO expression
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+    TO              shift and go to state 52
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+
+state 37
+
+    (26) expression -> WHILE expression . DO expression
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+    DO              shift and go to state 53
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+
+state 38
+
+    (2) statement -> ID EQ expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+    $end            reduce using rule 2 (statement -> ID EQ expression .)
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+
+state 39
+
+    (11) expression -> expression PLUS expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+    PLUS            reduce using rule 11 (expression -> expression PLUS expression .)
+    MINUS           reduce using rule 11 (expression -> expression PLUS expression .)
+    LT              reduce using rule 11 (expression -> expression PLUS expression .)
+    LTE             reduce using rule 11 (expression -> expression PLUS expression .)
+    GT              reduce using rule 11 (expression -> expression PLUS expression .)
+    GTE             reduce using rule 11 (expression -> expression PLUS expression .)
+    SIM             reduce using rule 11 (expression -> expression PLUS expression .)
+    NE              reduce using rule 11 (expression -> expression PLUS expression .)
+    $end            reduce using rule 11 (expression -> expression PLUS expression .)
+    RPARENT         reduce using rule 11 (expression -> expression PLUS expression .)
+    THEN            reduce using rule 11 (expression -> expression PLUS expression .)
+    TO              reduce using rule 11 (expression -> expression PLUS expression .)
+    DO              reduce using rule 11 (expression -> expression PLUS expression .)
+    ELSE            reduce using rule 11 (expression -> expression PLUS expression .)
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+
+  ! TIMES           [ reduce using rule 11 (expression -> expression PLUS expression .) ]
+  ! DIVIDE          [ reduce using rule 11 (expression -> expression PLUS expression .) ]
+  ! POWER           [ reduce using rule 11 (expression -> expression PLUS expression .) ]
+  ! PLUS            [ shift and go to state 17 ]
+  ! MINUS           [ shift and go to state 18 ]
+  ! LT              [ shift and go to state 22 ]
+  ! LTE             [ shift and go to state 23 ]
+  ! GT              [ shift and go to state 24 ]
+  ! GTE             [ shift and go to state 25 ]
+  ! SIM             [ shift and go to state 26 ]
+  ! NE              [ shift and go to state 27 ]
+
+
+state 40
+
+    (12) expression -> expression MINUS expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+    PLUS            reduce using rule 12 (expression -> expression MINUS expression .)
+    MINUS           reduce using rule 12 (expression -> expression MINUS expression .)
+    LT              reduce using rule 12 (expression -> expression MINUS expression .)
+    LTE             reduce using rule 12 (expression -> expression MINUS expression .)
+    GT              reduce using rule 12 (expression -> expression MINUS expression .)
+    GTE             reduce using rule 12 (expression -> expression MINUS expression .)
+    SIM             reduce using rule 12 (expression -> expression MINUS expression .)
+    NE              reduce using rule 12 (expression -> expression MINUS expression .)
+    $end            reduce using rule 12 (expression -> expression MINUS expression .)
+    RPARENT         reduce using rule 12 (expression -> expression MINUS expression .)
+    THEN            reduce using rule 12 (expression -> expression MINUS expression .)
+    TO              reduce using rule 12 (expression -> expression MINUS expression .)
+    DO              reduce using rule 12 (expression -> expression MINUS expression .)
+    ELSE            reduce using rule 12 (expression -> expression MINUS expression .)
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+
+  ! TIMES           [ reduce using rule 12 (expression -> expression MINUS expression .) ]
+  ! DIVIDE          [ reduce using rule 12 (expression -> expression MINUS expression .) ]
+  ! POWER           [ reduce using rule 12 (expression -> expression MINUS expression .) ]
+  ! PLUS            [ shift and go to state 17 ]
+  ! MINUS           [ shift and go to state 18 ]
+  ! LT              [ shift and go to state 22 ]
+  ! LTE             [ shift and go to state 23 ]
+  ! GT              [ shift and go to state 24 ]
+  ! GTE             [ shift and go to state 25 ]
+  ! SIM             [ shift and go to state 26 ]
+  ! NE              [ shift and go to state 27 ]
+
+
+state 41
+
+    (13) expression -> expression TIMES expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+    PLUS            reduce using rule 13 (expression -> expression TIMES expression .)
+    MINUS           reduce using rule 13 (expression -> expression TIMES expression .)
+    TIMES           reduce using rule 13 (expression -> expression TIMES expression .)
+    DIVIDE          reduce using rule 13 (expression -> expression TIMES expression .)
+    POWER           reduce using rule 13 (expression -> expression TIMES expression .)
+    LT              reduce using rule 13 (expression -> expression TIMES expression .)
+    LTE             reduce using rule 13 (expression -> expression TIMES expression .)
+    GT              reduce using rule 13 (expression -> expression TIMES expression .)
+    GTE             reduce using rule 13 (expression -> expression TIMES expression .)
+    SIM             reduce using rule 13 (expression -> expression TIMES expression .)
+    NE              reduce using rule 13 (expression -> expression TIMES expression .)
+    $end            reduce using rule 13 (expression -> expression TIMES expression .)
+    RPARENT         reduce using rule 13 (expression -> expression TIMES expression .)
+    THEN            reduce using rule 13 (expression -> expression TIMES expression .)
+    TO              reduce using rule 13 (expression -> expression TIMES expression .)
+    DO              reduce using rule 13 (expression -> expression TIMES expression .)
+    ELSE            reduce using rule 13 (expression -> expression TIMES expression .)
+
+  ! PLUS            [ shift and go to state 17 ]
+  ! MINUS           [ shift and go to state 18 ]
+  ! TIMES           [ shift and go to state 19 ]
+  ! DIVIDE          [ shift and go to state 20 ]
+  ! POWER           [ shift and go to state 21 ]
+  ! LT              [ shift and go to state 22 ]
+  ! LTE             [ shift and go to state 23 ]
+  ! GT              [ shift and go to state 24 ]
+  ! GTE             [ shift and go to state 25 ]
+  ! SIM             [ shift and go to state 26 ]
+  ! NE              [ shift and go to state 27 ]
+
+
+state 42
+
+    (14) expression -> expression DIVIDE expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+    PLUS            reduce using rule 14 (expression -> expression DIVIDE expression .)
+    MINUS           reduce using rule 14 (expression -> expression DIVIDE expression .)
+    TIMES           reduce using rule 14 (expression -> expression DIVIDE expression .)
+    DIVIDE          reduce using rule 14 (expression -> expression DIVIDE expression .)
+    POWER           reduce using rule 14 (expression -> expression DIVIDE expression .)
+    LT              reduce using rule 14 (expression -> expression DIVIDE expression .)
+    LTE             reduce using rule 14 (expression -> expression DIVIDE expression .)
+    GT              reduce using rule 14 (expression -> expression DIVIDE expression .)
+    GTE             reduce using rule 14 (expression -> expression DIVIDE expression .)
+    SIM             reduce using rule 14 (expression -> expression DIVIDE expression .)
+    NE              reduce using rule 14 (expression -> expression DIVIDE expression .)
+    $end            reduce using rule 14 (expression -> expression DIVIDE expression .)
+    RPARENT         reduce using rule 14 (expression -> expression DIVIDE expression .)
+    THEN            reduce using rule 14 (expression -> expression DIVIDE expression .)
+    TO              reduce using rule 14 (expression -> expression DIVIDE expression .)
+    DO              reduce using rule 14 (expression -> expression DIVIDE expression .)
+    ELSE            reduce using rule 14 (expression -> expression DIVIDE expression .)
+
+  ! PLUS            [ shift and go to state 17 ]
+  ! MINUS           [ shift and go to state 18 ]
+  ! TIMES           [ shift and go to state 19 ]
+  ! DIVIDE          [ shift and go to state 20 ]
+  ! POWER           [ shift and go to state 21 ]
+  ! LT              [ shift and go to state 22 ]
+  ! LTE             [ shift and go to state 23 ]
+  ! GT              [ shift and go to state 24 ]
+  ! GTE             [ shift and go to state 25 ]
+  ! SIM             [ shift and go to state 26 ]
+  ! NE              [ shift and go to state 27 ]
+
+
+state 43
+
+    (15) expression -> expression POWER expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+    PLUS            reduce using rule 15 (expression -> expression POWER expression .)
+    MINUS           reduce using rule 15 (expression -> expression POWER expression .)
+    TIMES           reduce using rule 15 (expression -> expression POWER expression .)
+    DIVIDE          reduce using rule 15 (expression -> expression POWER expression .)
+    POWER           reduce using rule 15 (expression -> expression POWER expression .)
+    LT              reduce using rule 15 (expression -> expression POWER expression .)
+    LTE             reduce using rule 15 (expression -> expression POWER expression .)
+    GT              reduce using rule 15 (expression -> expression POWER expression .)
+    GTE             reduce using rule 15 (expression -> expression POWER expression .)
+    SIM             reduce using rule 15 (expression -> expression POWER expression .)
+    NE              reduce using rule 15 (expression -> expression POWER expression .)
+    $end            reduce using rule 15 (expression -> expression POWER expression .)
+    RPARENT         reduce using rule 15 (expression -> expression POWER expression .)
+    THEN            reduce using rule 15 (expression -> expression POWER expression .)
+    TO              reduce using rule 15 (expression -> expression POWER expression .)
+    DO              reduce using rule 15 (expression -> expression POWER expression .)
+    ELSE            reduce using rule 15 (expression -> expression POWER expression .)
+
+  ! PLUS            [ shift and go to state 17 ]
+  ! MINUS           [ shift and go to state 18 ]
+  ! TIMES           [ shift and go to state 19 ]
+  ! DIVIDE          [ shift and go to state 20 ]
+  ! POWER           [ shift and go to state 21 ]
+  ! LT              [ shift and go to state 22 ]
+  ! LTE             [ shift and go to state 23 ]
+  ! GT              [ shift and go to state 24 ]
+  ! GTE             [ shift and go to state 25 ]
+  ! SIM             [ shift and go to state 26 ]
+  ! NE              [ shift and go to state 27 ]
+
+
+state 44
+
+    (17) expression -> expression LT expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for POWER resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for LTE resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for GTE resolved as shift
+  ! shift/reduce conflict for SIM resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+    $end            reduce using rule 17 (expression -> expression LT expression .)
+    RPARENT         reduce using rule 17 (expression -> expression LT expression .)
+    THEN            reduce using rule 17 (expression -> expression LT expression .)
+    TO              reduce using rule 17 (expression -> expression LT expression .)
+    DO              reduce using rule 17 (expression -> expression LT expression .)
+    ELSE            reduce using rule 17 (expression -> expression LT expression .)
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+  ! PLUS            [ reduce using rule 17 (expression -> expression LT expression .) ]
+  ! MINUS           [ reduce using rule 17 (expression -> expression LT expression .) ]
+  ! TIMES           [ reduce using rule 17 (expression -> expression LT expression .) ]
+  ! DIVIDE          [ reduce using rule 17 (expression -> expression LT expression .) ]
+  ! POWER           [ reduce using rule 17 (expression -> expression LT expression .) ]
+  ! LT              [ reduce using rule 17 (expression -> expression LT expression .) ]
+  ! LTE             [ reduce using rule 17 (expression -> expression LT expression .) ]
+  ! GT              [ reduce using rule 17 (expression -> expression LT expression .) ]
+  ! GTE             [ reduce using rule 17 (expression -> expression LT expression .) ]
+  ! SIM             [ reduce using rule 17 (expression -> expression LT expression .) ]
+  ! NE              [ reduce using rule 17 (expression -> expression LT expression .) ]
+
+
+state 45
+
+    (18) expression -> expression LTE expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for POWER resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for LTE resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for GTE resolved as shift
+  ! shift/reduce conflict for SIM resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+    $end            reduce using rule 18 (expression -> expression LTE expression .)
+    RPARENT         reduce using rule 18 (expression -> expression LTE expression .)
+    THEN            reduce using rule 18 (expression -> expression LTE expression .)
+    TO              reduce using rule 18 (expression -> expression LTE expression .)
+    DO              reduce using rule 18 (expression -> expression LTE expression .)
+    ELSE            reduce using rule 18 (expression -> expression LTE expression .)
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+  ! PLUS            [ reduce using rule 18 (expression -> expression LTE expression .) ]
+  ! MINUS           [ reduce using rule 18 (expression -> expression LTE expression .) ]
+  ! TIMES           [ reduce using rule 18 (expression -> expression LTE expression .) ]
+  ! DIVIDE          [ reduce using rule 18 (expression -> expression LTE expression .) ]
+  ! POWER           [ reduce using rule 18 (expression -> expression LTE expression .) ]
+  ! LT              [ reduce using rule 18 (expression -> expression LTE expression .) ]
+  ! LTE             [ reduce using rule 18 (expression -> expression LTE expression .) ]
+  ! GT              [ reduce using rule 18 (expression -> expression LTE expression .) ]
+  ! GTE             [ reduce using rule 18 (expression -> expression LTE expression .) ]
+  ! SIM             [ reduce using rule 18 (expression -> expression LTE expression .) ]
+  ! NE              [ reduce using rule 18 (expression -> expression LTE expression .) ]
+
+
+state 46
+
+    (19) expression -> expression GT expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for POWER resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for LTE resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for GTE resolved as shift
+  ! shift/reduce conflict for SIM resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+    $end            reduce using rule 19 (expression -> expression GT expression .)
+    RPARENT         reduce using rule 19 (expression -> expression GT expression .)
+    THEN            reduce using rule 19 (expression -> expression GT expression .)
+    TO              reduce using rule 19 (expression -> expression GT expression .)
+    DO              reduce using rule 19 (expression -> expression GT expression .)
+    ELSE            reduce using rule 19 (expression -> expression GT expression .)
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+  ! PLUS            [ reduce using rule 19 (expression -> expression GT expression .) ]
+  ! MINUS           [ reduce using rule 19 (expression -> expression GT expression .) ]
+  ! TIMES           [ reduce using rule 19 (expression -> expression GT expression .) ]
+  ! DIVIDE          [ reduce using rule 19 (expression -> expression GT expression .) ]
+  ! POWER           [ reduce using rule 19 (expression -> expression GT expression .) ]
+  ! LT              [ reduce using rule 19 (expression -> expression GT expression .) ]
+  ! LTE             [ reduce using rule 19 (expression -> expression GT expression .) ]
+  ! GT              [ reduce using rule 19 (expression -> expression GT expression .) ]
+  ! GTE             [ reduce using rule 19 (expression -> expression GT expression .) ]
+  ! SIM             [ reduce using rule 19 (expression -> expression GT expression .) ]
+  ! NE              [ reduce using rule 19 (expression -> expression GT expression .) ]
+
+
+state 47
+
+    (20) expression -> expression GTE expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for POWER resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for LTE resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for GTE resolved as shift
+  ! shift/reduce conflict for SIM resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+    $end            reduce using rule 20 (expression -> expression GTE expression .)
+    RPARENT         reduce using rule 20 (expression -> expression GTE expression .)
+    THEN            reduce using rule 20 (expression -> expression GTE expression .)
+    TO              reduce using rule 20 (expression -> expression GTE expression .)
+    DO              reduce using rule 20 (expression -> expression GTE expression .)
+    ELSE            reduce using rule 20 (expression -> expression GTE expression .)
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+  ! PLUS            [ reduce using rule 20 (expression -> expression GTE expression .) ]
+  ! MINUS           [ reduce using rule 20 (expression -> expression GTE expression .) ]
+  ! TIMES           [ reduce using rule 20 (expression -> expression GTE expression .) ]
+  ! DIVIDE          [ reduce using rule 20 (expression -> expression GTE expression .) ]
+  ! POWER           [ reduce using rule 20 (expression -> expression GTE expression .) ]
+  ! LT              [ reduce using rule 20 (expression -> expression GTE expression .) ]
+  ! LTE             [ reduce using rule 20 (expression -> expression GTE expression .) ]
+  ! GT              [ reduce using rule 20 (expression -> expression GTE expression .) ]
+  ! GTE             [ reduce using rule 20 (expression -> expression GTE expression .) ]
+  ! SIM             [ reduce using rule 20 (expression -> expression GTE expression .) ]
+  ! NE              [ reduce using rule 20 (expression -> expression GTE expression .) ]
+
+
+state 48
+
+    (21) expression -> expression SIM expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for POWER resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for LTE resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for GTE resolved as shift
+  ! shift/reduce conflict for SIM resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+    $end            reduce using rule 21 (expression -> expression SIM expression .)
+    RPARENT         reduce using rule 21 (expression -> expression SIM expression .)
+    THEN            reduce using rule 21 (expression -> expression SIM expression .)
+    TO              reduce using rule 21 (expression -> expression SIM expression .)
+    DO              reduce using rule 21 (expression -> expression SIM expression .)
+    ELSE            reduce using rule 21 (expression -> expression SIM expression .)
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+  ! PLUS            [ reduce using rule 21 (expression -> expression SIM expression .) ]
+  ! MINUS           [ reduce using rule 21 (expression -> expression SIM expression .) ]
+  ! TIMES           [ reduce using rule 21 (expression -> expression SIM expression .) ]
+  ! DIVIDE          [ reduce using rule 21 (expression -> expression SIM expression .) ]
+  ! POWER           [ reduce using rule 21 (expression -> expression SIM expression .) ]
+  ! LT              [ reduce using rule 21 (expression -> expression SIM expression .) ]
+  ! LTE             [ reduce using rule 21 (expression -> expression SIM expression .) ]
+  ! GT              [ reduce using rule 21 (expression -> expression SIM expression .) ]
+  ! GTE             [ reduce using rule 21 (expression -> expression SIM expression .) ]
+  ! SIM             [ reduce using rule 21 (expression -> expression SIM expression .) ]
+  ! NE              [ reduce using rule 21 (expression -> expression SIM expression .) ]
+
+
+state 49
+
+    (22) expression -> expression NE expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for POWER resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for LTE resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for GTE resolved as shift
+  ! shift/reduce conflict for SIM resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+    $end            reduce using rule 22 (expression -> expression NE expression .)
+    RPARENT         reduce using rule 22 (expression -> expression NE expression .)
+    THEN            reduce using rule 22 (expression -> expression NE expression .)
+    TO              reduce using rule 22 (expression -> expression NE expression .)
+    DO              reduce using rule 22 (expression -> expression NE expression .)
+    ELSE            reduce using rule 22 (expression -> expression NE expression .)
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+  ! PLUS            [ reduce using rule 22 (expression -> expression NE expression .) ]
+  ! MINUS           [ reduce using rule 22 (expression -> expression NE expression .) ]
+  ! TIMES           [ reduce using rule 22 (expression -> expression NE expression .) ]
+  ! DIVIDE          [ reduce using rule 22 (expression -> expression NE expression .) ]
+  ! POWER           [ reduce using rule 22 (expression -> expression NE expression .) ]
+  ! LT              [ reduce using rule 22 (expression -> expression NE expression .) ]
+  ! LTE             [ reduce using rule 22 (expression -> expression NE expression .) ]
+  ! GT              [ reduce using rule 22 (expression -> expression NE expression .) ]
+  ! GTE             [ reduce using rule 22 (expression -> expression NE expression .) ]
+  ! SIM             [ reduce using rule 22 (expression -> expression NE expression .) ]
+  ! NE              [ reduce using rule 22 (expression -> expression NE expression .) ]
+
+
+state 50
+
+    (7) expression -> LPARENT expression RPARENT .
+
+    PLUS            reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    MINUS           reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    TIMES           reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    DIVIDE          reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    POWER           reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    LT              reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    LTE             reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    GT              reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    GTE             reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    SIM             reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    NE              reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    $end            reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    RPARENT         reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    THEN            reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    TO              reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    DO              reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+    ELSE            reduce using rule 7 (expression -> LPARENT expression RPARENT .)
+
+
+state 51
+
+    (23) expression -> IF expression THEN . expression
+    (24) expression -> IF expression THEN . expression ELSE expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 54
+
+state 52
+
+    (25) expression -> FOR expression TO . expression DO expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 55
+
+state 53
+
+    (26) expression -> WHILE expression DO . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 56
+
+state 54
+
+    (23) expression -> IF expression THEN expression .
+    (24) expression -> IF expression THEN expression . ELSE expression
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+  ! shift/reduce conflict for ELSE resolved as shift
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for POWER resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for LTE resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for GTE resolved as shift
+  ! shift/reduce conflict for SIM resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+    $end            reduce using rule 23 (expression -> IF expression THEN expression .)
+    RPARENT         reduce using rule 23 (expression -> IF expression THEN expression .)
+    THEN            reduce using rule 23 (expression -> IF expression THEN expression .)
+    TO              reduce using rule 23 (expression -> IF expression THEN expression .)
+    DO              reduce using rule 23 (expression -> IF expression THEN expression .)
+    ELSE            shift and go to state 57
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+  ! PLUS            [ reduce using rule 23 (expression -> IF expression THEN expression .) ]
+  ! MINUS           [ reduce using rule 23 (expression -> IF expression THEN expression .) ]
+  ! TIMES           [ reduce using rule 23 (expression -> IF expression THEN expression .) ]
+  ! DIVIDE          [ reduce using rule 23 (expression -> IF expression THEN expression .) ]
+  ! POWER           [ reduce using rule 23 (expression -> IF expression THEN expression .) ]
+  ! LT              [ reduce using rule 23 (expression -> IF expression THEN expression .) ]
+  ! LTE             [ reduce using rule 23 (expression -> IF expression THEN expression .) ]
+  ! GT              [ reduce using rule 23 (expression -> IF expression THEN expression .) ]
+  ! GTE             [ reduce using rule 23 (expression -> IF expression THEN expression .) ]
+  ! SIM             [ reduce using rule 23 (expression -> IF expression THEN expression .) ]
+  ! NE              [ reduce using rule 23 (expression -> IF expression THEN expression .) ]
+  ! ELSE            [ reduce using rule 23 (expression -> IF expression THEN expression .) ]
+
+
+state 55
+
+    (25) expression -> FOR expression TO expression . DO expression
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+    DO              shift and go to state 58
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+
+state 56
+
+    (26) expression -> WHILE expression DO expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for POWER resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for LTE resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for GTE resolved as shift
+  ! shift/reduce conflict for SIM resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+    $end            reduce using rule 26 (expression -> WHILE expression DO expression .)
+    RPARENT         reduce using rule 26 (expression -> WHILE expression DO expression .)
+    THEN            reduce using rule 26 (expression -> WHILE expression DO expression .)
+    TO              reduce using rule 26 (expression -> WHILE expression DO expression .)
+    DO              reduce using rule 26 (expression -> WHILE expression DO expression .)
+    ELSE            reduce using rule 26 (expression -> WHILE expression DO expression .)
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+  ! PLUS            [ reduce using rule 26 (expression -> WHILE expression DO expression .) ]
+  ! MINUS           [ reduce using rule 26 (expression -> WHILE expression DO expression .) ]
+  ! TIMES           [ reduce using rule 26 (expression -> WHILE expression DO expression .) ]
+  ! DIVIDE          [ reduce using rule 26 (expression -> WHILE expression DO expression .) ]
+  ! POWER           [ reduce using rule 26 (expression -> WHILE expression DO expression .) ]
+  ! LT              [ reduce using rule 26 (expression -> WHILE expression DO expression .) ]
+  ! LTE             [ reduce using rule 26 (expression -> WHILE expression DO expression .) ]
+  ! GT              [ reduce using rule 26 (expression -> WHILE expression DO expression .) ]
+  ! GTE             [ reduce using rule 26 (expression -> WHILE expression DO expression .) ]
+  ! SIM             [ reduce using rule 26 (expression -> WHILE expression DO expression .) ]
+  ! NE              [ reduce using rule 26 (expression -> WHILE expression DO expression .) ]
+
+
+state 57
+
+    (24) expression -> IF expression THEN expression ELSE . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 59
+
+state 58
+
+    (25) expression -> FOR expression TO expression DO . expression
+    (7) expression -> . LPARENT expression RPARENT
+    (8) expression -> . INTEGER
+    (9) expression -> . FLOATV
+    (10) expression -> . ID
+    (11) expression -> . expression PLUS expression
+    (12) expression -> . expression MINUS expression
+    (13) expression -> . expression TIMES expression
+    (14) expression -> . expression DIVIDE expression
+    (15) expression -> . expression POWER expression
+    (16) expression -> . MINUS expression
+    (17) expression -> . expression LT expression
+    (18) expression -> . expression LTE expression
+    (19) expression -> . expression GT expression
+    (20) expression -> . expression GTE expression
+    (21) expression -> . expression SIM expression
+    (22) expression -> . expression NE expression
+    (23) expression -> . IF expression THEN expression
+    (24) expression -> . IF expression THEN expression ELSE expression
+    (25) expression -> . FOR expression TO expression DO expression
+    (26) expression -> . WHILE expression DO expression
+
+    LPARENT         shift and go to state 8
+    INTEGER         shift and go to state 9
+    FLOATV          shift and go to state 10
+    ID              shift and go to state 33
+    MINUS           shift and go to state 11
+    IF              shift and go to state 12
+    FOR             shift and go to state 13
+    WHILE           shift and go to state 14
+
+    expression                     shift and go to state 60
+
+state 59
+
+    (24) expression -> IF expression THEN expression ELSE expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for POWER resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for LTE resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for GTE resolved as shift
+  ! shift/reduce conflict for SIM resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+    $end            reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .)
+    RPARENT         reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .)
+    THEN            reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .)
+    TO              reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .)
+    DO              reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .)
+    ELSE            reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .)
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+  ! PLUS            [ reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .) ]
+  ! MINUS           [ reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .) ]
+  ! TIMES           [ reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .) ]
+  ! DIVIDE          [ reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .) ]
+  ! POWER           [ reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .) ]
+  ! LT              [ reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .) ]
+  ! LTE             [ reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .) ]
+  ! GT              [ reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .) ]
+  ! GTE             [ reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .) ]
+  ! SIM             [ reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .) ]
+  ! NE              [ reduce using rule 24 (expression -> IF expression THEN expression ELSE expression .) ]
+
+
+state 60
+
+    (25) expression -> FOR expression TO expression DO expression .
+    (11) expression -> expression . PLUS expression
+    (12) expression -> expression . MINUS expression
+    (13) expression -> expression . TIMES expression
+    (14) expression -> expression . DIVIDE expression
+    (15) expression -> expression . POWER expression
+    (17) expression -> expression . LT expression
+    (18) expression -> expression . LTE expression
+    (19) expression -> expression . GT expression
+    (20) expression -> expression . GTE expression
+    (21) expression -> expression . SIM expression
+    (22) expression -> expression . NE expression
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for POWER resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for LTE resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for GTE resolved as shift
+  ! shift/reduce conflict for SIM resolved as shift
+  ! shift/reduce conflict for NE resolved as shift
+    $end            reduce using rule 25 (expression -> FOR expression TO expression DO expression .)
+    RPARENT         reduce using rule 25 (expression -> FOR expression TO expression DO expression .)
+    THEN            reduce using rule 25 (expression -> FOR expression TO expression DO expression .)
+    TO              reduce using rule 25 (expression -> FOR expression TO expression DO expression .)
+    DO              reduce using rule 25 (expression -> FOR expression TO expression DO expression .)
+    ELSE            reduce using rule 25 (expression -> FOR expression TO expression DO expression .)
+    PLUS            shift and go to state 17
+    MINUS           shift and go to state 18
+    TIMES           shift and go to state 19
+    DIVIDE          shift and go to state 20
+    POWER           shift and go to state 21
+    LT              shift and go to state 22
+    LTE             shift and go to state 23
+    GT              shift and go to state 24
+    GTE             shift and go to state 25
+    SIM             shift and go to state 26
+    NE              shift and go to state 27
+
+  ! PLUS            [ reduce using rule 25 (expression -> FOR expression TO expression DO expression .) ]
+  ! MINUS           [ reduce using rule 25 (expression -> FOR expression TO expression DO expression .) ]
+  ! TIMES           [ reduce using rule 25 (expression -> FOR expression TO expression DO expression .) ]
+  ! DIVIDE          [ reduce using rule 25 (expression -> FOR expression TO expression DO expression .) ]
+  ! POWER           [ reduce using rule 25 (expression -> FOR expression TO expression DO expression .) ]
+  ! LT              [ reduce using rule 25 (expression -> FOR expression TO expression DO expression .) ]
+  ! LTE             [ reduce using rule 25 (expression -> FOR expression TO expression DO expression .) ]
+  ! GT              [ reduce using rule 25 (expression -> FOR expression TO expression DO expression .) ]
+  ! GTE             [ reduce using rule 25 (expression -> FOR expression TO expression DO expression .) ]
+  ! SIM             [ reduce using rule 25 (expression -> FOR expression TO expression DO expression .) ]
+  ! NE              [ reduce using rule 25 (expression -> FOR expression TO expression DO expression .) ]
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for PLUS in state 44 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 44 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 44 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 44 resolved as shift
+WARNING: shift/reduce conflict for POWER in state 44 resolved as shift
+WARNING: shift/reduce conflict for LT in state 44 resolved as shift
+WARNING: shift/reduce conflict for LTE in state 44 resolved as shift
+WARNING: shift/reduce conflict for GT in state 44 resolved as shift
+WARNING: shift/reduce conflict for GTE in state 44 resolved as shift
+WARNING: shift/reduce conflict for SIM in state 44 resolved as shift
+WARNING: shift/reduce conflict for NE in state 44 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 45 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 45 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 45 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 45 resolved as shift
+WARNING: shift/reduce conflict for POWER in state 45 resolved as shift
+WARNING: shift/reduce conflict for LT in state 45 resolved as shift
+WARNING: shift/reduce conflict for LTE in state 45 resolved as shift
+WARNING: shift/reduce conflict for GT in state 45 resolved as shift
+WARNING: shift/reduce conflict for GTE in state 45 resolved as shift
+WARNING: shift/reduce conflict for SIM in state 45 resolved as shift
+WARNING: shift/reduce conflict for NE in state 45 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 46 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 46 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 46 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 46 resolved as shift
+WARNING: shift/reduce conflict for POWER in state 46 resolved as shift
+WARNING: shift/reduce conflict for LT in state 46 resolved as shift
+WARNING: shift/reduce conflict for LTE in state 46 resolved as shift
+WARNING: shift/reduce conflict for GT in state 46 resolved as shift
+WARNING: shift/reduce conflict for GTE in state 46 resolved as shift
+WARNING: shift/reduce conflict for SIM in state 46 resolved as shift
+WARNING: shift/reduce conflict for NE in state 46 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 47 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 47 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 47 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 47 resolved as shift
+WARNING: shift/reduce conflict for POWER in state 47 resolved as shift
+WARNING: shift/reduce conflict for LT in state 47 resolved as shift
+WARNING: shift/reduce conflict for LTE in state 47 resolved as shift
+WARNING: shift/reduce conflict for GT in state 47 resolved as shift
+WARNING: shift/reduce conflict for GTE in state 47 resolved as shift
+WARNING: shift/reduce conflict for SIM in state 47 resolved as shift
+WARNING: shift/reduce conflict for NE in state 47 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 48 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 48 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 48 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 48 resolved as shift
+WARNING: shift/reduce conflict for POWER in state 48 resolved as shift
+WARNING: shift/reduce conflict for LT in state 48 resolved as shift
+WARNING: shift/reduce conflict for LTE in state 48 resolved as shift
+WARNING: shift/reduce conflict for GT in state 48 resolved as shift
+WARNING: shift/reduce conflict for GTE in state 48 resolved as shift
+WARNING: shift/reduce conflict for SIM in state 48 resolved as shift
+WARNING: shift/reduce conflict for NE in state 48 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 49 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 49 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 49 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 49 resolved as shift
+WARNING: shift/reduce conflict for POWER in state 49 resolved as shift
+WARNING: shift/reduce conflict for LT in state 49 resolved as shift
+WARNING: shift/reduce conflict for LTE in state 49 resolved as shift
+WARNING: shift/reduce conflict for GT in state 49 resolved as shift
+WARNING: shift/reduce conflict for GTE in state 49 resolved as shift
+WARNING: shift/reduce conflict for SIM in state 49 resolved as shift
+WARNING: shift/reduce conflict for NE in state 49 resolved as shift
+WARNING: shift/reduce conflict for ELSE in state 54 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 54 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 54 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 54 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 54 resolved as shift
+WARNING: shift/reduce conflict for POWER in state 54 resolved as shift
+WARNING: shift/reduce conflict for LT in state 54 resolved as shift
+WARNING: shift/reduce conflict for LTE in state 54 resolved as shift
+WARNING: shift/reduce conflict for GT in state 54 resolved as shift
+WARNING: shift/reduce conflict for GTE in state 54 resolved as shift
+WARNING: shift/reduce conflict for SIM in state 54 resolved as shift
+WARNING: shift/reduce conflict for NE in state 54 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 56 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 56 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 56 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 56 resolved as shift
+WARNING: shift/reduce conflict for POWER in state 56 resolved as shift
+WARNING: shift/reduce conflict for LT in state 56 resolved as shift
+WARNING: shift/reduce conflict for LTE in state 56 resolved as shift
+WARNING: shift/reduce conflict for GT in state 56 resolved as shift
+WARNING: shift/reduce conflict for GTE in state 56 resolved as shift
+WARNING: shift/reduce conflict for SIM in state 56 resolved as shift
+WARNING: shift/reduce conflict for NE in state 56 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 59 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 59 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 59 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 59 resolved as shift
+WARNING: shift/reduce conflict for POWER in state 59 resolved as shift
+WARNING: shift/reduce conflict for LT in state 59 resolved as shift
+WARNING: shift/reduce conflict for LTE in state 59 resolved as shift
+WARNING: shift/reduce conflict for GT in state 59 resolved as shift
+WARNING: shift/reduce conflict for GTE in state 59 resolved as shift
+WARNING: shift/reduce conflict for SIM in state 59 resolved as shift
+WARNING: shift/reduce conflict for NE in state 59 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 60 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 60 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 60 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 60 resolved as shift
+WARNING: shift/reduce conflict for POWER in state 60 resolved as shift
+WARNING: shift/reduce conflict for LT in state 60 resolved as shift
+WARNING: shift/reduce conflict for LTE in state 60 resolved as shift
+WARNING: shift/reduce conflict for GT in state 60 resolved as shift
+WARNING: shift/reduce conflict for GTE in state 60 resolved as shift
+WARNING: shift/reduce conflict for SIM in state 60 resolved as shift
+WARNING: shift/reduce conflict for NE in state 60 resolved as shift
