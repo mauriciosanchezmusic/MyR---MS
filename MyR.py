@@ -2,14 +2,13 @@ import sys
 sys.path.insert(0,"../..")
 
 import MyRLex
+import MyRCubo
 import MyRParse
 
-while 1:
-    try:
-        line = input("[MyR] > ")
-    except EOFError:
-        raise SystemExit
-    if not line: continue
-    line += "\n"
-    prog = MyRParse.parse(line)
-    if not prog: continue
+fileToRead = sys.argv[1]
+file = open(fileToRead, 'r')
+data = file.read()
+
+prog = MyRParse.parse(data)
+
+file.close()
