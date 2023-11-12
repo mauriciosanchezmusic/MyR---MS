@@ -1,2 +1,12 @@
-program test1
-2 * 45 - 4 +(2.34 / 4.2)
+program test1;
+
+var int x,y;
+
+main {
+    x = 2;
+    y = 3*x;
+
+    if (x > y) {
+	y = x;
+    }
+}

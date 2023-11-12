@@ -4,12 +4,14 @@ reservadas = {
     ## MAIN PROGRAM
     'program':'PROGRAM',
     'main':'MAIN',
+    'funcion':'FUNCION',
     ## VARS & TYPE
     'var':'VAR',
     'int':'INT',
     'float':'FLOAT',
     'char':'CHAR',
     'string':'STRING',
+    'void':'VOID',
     ## IF-ELSE
     'if':'IF',
     'then':'THEN',
@@ -22,18 +24,16 @@ reservadas = {
 }
 
 tokens = list(reservadas.values()) + [
-    'ID', 'COMMENT', 'INTEGER', 'FLOATV', 'CHARV', 
+    'ID', 'COMMENT',
+    'INTEGERCTE', 'FLOATCTE', 'CHARCTE',
     'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'POWER', 'EQ',
     'LT', 'LTE', 'GT', 'GTE', 'SIM', 'NE',
     'LPARENT', 'RPARENT', 'LBRACKET', 'RBRACKET',
-    'NEWLINE',
+    'NEWLINE', 'AND', 'OR',
     'SEMI', 'COMMA',
 ]
 
-t_INTEGER  = r'\d+'
-t_FLOATV   = r'((\d*\.\d+)(E[\+-]?\d+)?|([1-9]\d*E[\+-]?\d+))'
 t_STRING   = r'\".*?\"'
-t_CHARV    = r'([_A-Za-z])'
 t_PLUS     = r'\+'
 t_MINUS    = r'-'
 t_TIMES    = r'\*'
@@ -46,60 +46,21 @@ t_GT       = r'>'
 t_GTE      = r'>='
 t_SIM      = r'=='
 t_NE       = r'!='
+t_AND      = r'&'
+t_OR       = r'\|'
 t_LPARENT  = r'\('
 t_RPARENT  = r'\)'
 t_LBRACKET = r'\{'
 t_RBRACKET = r'\}'
 t_SEMI     = r';'
 t_COMMA    = r'\,'
+t_INTEGERCTE = r'[0-9][0-9]*'
+t_FLOATCTE   = r'[0-9][0-9]*\.[0-9]'
+t_CHARCTE    = r'(\'[^\']\')'
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     t.type = reservadas.get(t.value,'ID')
-    return t
-
-def t_INT(t):
-    r'int'
-    return t
-
-def t_FLOAT(t):
-    r'float'
-    return t
-
-def t_CHAR(t):
-    r'char'
-    return t
-
-def t_COMMENT(p):
-    r'%% .'
-    return t
-
-def t_IF(t):
-    r'if'
-    return t
-
-def t_THEN(t):
-    r'then'
-    return t
-
-def t_ELSE(t):
-    r'else'
-    return t
-
-def t_FOR(t):
-    r'for'
-    return t
-
-def t_TO(t):
-    r'to'
-    return t
-
-def t_WHILE(t):
-    r'while'
-    return t
-
-def t_DO(t):
-    r'do'
     return t
 
 def t_NEWLINE(t):
