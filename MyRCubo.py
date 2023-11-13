@@ -16,7 +16,7 @@ quad = {
             '<=':'bool',
             '>' :'bool',
             '>=':'bool',
-            '&&':'int',
+            '&' :'int',
             '|' :'int'
         },
         'float':{
@@ -32,7 +32,7 @@ quad = {
             '<=':'bool',
             '>' :'bool',
             '>=':'bool',
-            '&&':'float',
+            '&' :'float',
             '|' :'int'
         },
         'char':{
@@ -48,8 +48,24 @@ quad = {
             '<=':'Error',
             '>' :'Error',
             '>=':'Error',
-            '&&':'char',
+            '&' :'char',
             '|' :'int'
+        },
+        'bool':{
+            '+' :'Error',
+            '-' :'Error',
+            '*' :'Error',
+            '/' :'Error',
+            '^' :'Error',
+            '=' :False,
+            '==':'bool',
+            '!=':'bool',
+            '<' :'Error',
+            '<=':'Error',
+            '>' :'Error',
+            '>=':'Error',
+            '&' :'Error',
+            '|' :'Error'
         },
     },
     'float':{
@@ -66,7 +82,7 @@ quad = {
             '<=':'bool',
             '>' :'bool',
             '>=':'bool',
-            '&&':'int',
+            '&' :'int',
             '|' :'float'
         },
         'float':{
@@ -82,7 +98,7 @@ quad = {
             '<=':'bool',
             '>' :'bool',
             '>=':'bool',
-            '&&':'float',
+            '&' :'float',
             '|' :'float'
         },
         'char':{
@@ -98,8 +114,24 @@ quad = {
             '<=':'Error',
             '>' :'Error',
             '>=':'Error',
-            '&&':'char',
+            '&' :'char',
             '|' :'float'
+        },
+        'bool':{
+            '+' :'Error',
+            '-' :'Error',
+            '*' :'char',
+            '/' :'Error',
+            '^' :'Error',
+            '=' :False,
+            '==':'bool',
+            '!=':'bool',
+            '<' :'Error',
+            '<=':'Error',
+            '>' :'Error',
+            '>=':'Error',
+            '&' :'Error',
+            '|' :'Error'
         },
     },
     'char':{
@@ -116,7 +148,7 @@ quad = {
             '<=':'Error',
             '>' :'Error',
             '>=':'Error',
-            '&&':'int',
+            '&' :'int',
             '|' :'char'
         },
         'float':{
@@ -132,7 +164,7 @@ quad = {
             '<=':'Error',
             '>' :'Error',
             '>=':'Error',
-            '&&':'float',
+            '&' :'float',
             '|' :'char'
         },
         'char':{
@@ -148,8 +180,90 @@ quad = {
             '<=':'bool',
             '>' :'bool',
             '>=':'bool',
-            '&&':'char',
+            '&' :'char',
             '|' :'char'
+        },
+        'bool':{
+            '+' :'Error',
+            '-' :'Error',
+            '*' :'char',
+            '/' :'Error',
+            '^' :'Error',
+            '=' :False,
+            '==':'bool',
+            '!=':'bool',
+            '<' :'Error',
+            '<=':'Error',
+            '>' :'Error',
+            '>=':'Error',
+            '&' :'Error',
+            '|' :'Error'
+        },
+    },
+    'bool':{
+        'int':{
+            '+' :'Error',
+            '-' :'Error',
+            '*' :'char',
+            '/' :'Error',
+            '^' :'Error',
+            '=' :False,
+            '==':'bool',
+            '!=':'bool',
+            '<' :'Error',
+            '<=':'Error',
+            '>' :'Error',
+            '>=':'Error',
+            '&' :'Error',
+            '|' :'Error'
+        },
+        'float':{
+            '+' :'Error',
+            '-' :'Error',
+            '*' :'Error',
+            '/' :'Error',
+            '^' :'Error',
+            '=' :False,
+            '==':'bool',
+            '!=':'bool',
+            '<' :'Error',
+            '<=':'Error',
+            '>' :'Error',
+            '>=':'Error',
+            '&' :'Error',
+            '|' :'Error'
+        },
+        'char':{
+            '+' :'char',
+            '-' :'Error',
+            '*' :'Error',
+            '/' :'Error',
+            '^' :'Error',
+            '=' :False,
+            '==':'bool',
+            '!=':'bool',
+            '<' :'Error',
+            '<=':'Error',
+            '>' :'Error',
+            '>=':'Error',
+            '&' :'Error',
+            '|' :'Error'
+        },
+        'bool':{
+            '+' :'Error',
+            '-' :'Error',
+            '*' :'Error',
+            '/' :'Error',
+            '^' :'Error',
+            '=' :True,
+            '==':'bool',
+            '!=':'bool',
+            '<' :'Error',
+            '<=':'Error',
+            '>' :'Error',
+            '>=':'Error',
+            '&' :'bool',
+            '|' :'bool'
         }
     }
 }

@@ -1,7 +1,7 @@
 import ply.lex as lex
 
 reservadas = {
-    ## MAIN PROGRAM
+    ## MAIN PROGRAM AND FUNCTIONS
     'program':'PROGRAM',
     'main':'MAIN',
     'funcion':'FUNCION',
@@ -10,7 +10,6 @@ reservadas = {
     'int':'INT',
     'float':'FLOAT',
     'char':'CHAR',
-    'string':'STRING',
     'void':'VOID',
     ## IF-ELSE
     'if':'IF',
@@ -21,6 +20,11 @@ reservadas = {
     'to':'TO',
     'while':'WHILE',
     'do':'DO',
+    ## RESERVED FOR GENERAL USE
+    'newline':'NEWLINE',
+    'read':'READ',
+    'write':'WRITE',
+    'return':'RETURN'
 }
 
 tokens = list(reservadas.values()) + [
@@ -29,11 +33,10 @@ tokens = list(reservadas.values()) + [
     'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'POWER', 'EQ',
     'LT', 'LTE', 'GT', 'GTE', 'SIM', 'NE',
     'LPARENT', 'RPARENT', 'LBRACKET', 'RBRACKET',
-    'NEWLINE', 'AND', 'OR',
+    'AND', 'OR',
     'SEMI', 'COMMA',
 ]
 
-t_STRING   = r'\".*?\"'
 t_PLUS     = r'\+'
 t_MINUS    = r'-'
 t_TIMES    = r'\*'
@@ -59,18 +62,18 @@ t_FLOATCTE   = r'[0-9][0-9]*\.[0-9]'
 t_CHARCTE    = r'(\'[^\']\')'
 
 def t_ID(t):
-    r'[a-zA-Z_][a-zA-Z_0-9]*'
+    r'[a-zA-Z_][a-zA-Z0-9_]*'
     t.type = reservadas.get(t.value,'ID')
     return t
 
-def t_NEWLINE(t):
+def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
 t_ignore = ' \t'
 
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    print("CARACTER ILEGAL '%s'" % t.value[0])
     t.lexer.skip(1)
 
 lexer = lex.lex()

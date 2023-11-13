@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 
-import MyRCubo
 from MyRLex import tokens
+import MyRCubo
 
 ####  LISTAS, DICCIONARIOS, TABLAS Y DATOS ESTRUCTURADOS
 
@@ -21,15 +21,17 @@ funcion_llamada    = ''
 ret_flag           = 0
 
 constantes                  = {}
-siguiente_entero            = 1000
-siguiente_decimal           = 5000
-siguiente_char              = 9000
-siguiente_global_entero     = 11000
-siguiente_global_decimal    = 15000
-siguiente_global_char       = 19000
-siguiente_constante_entera  = 21000
-siguiente_constante_decimal = 25000
-siguiente_constante_char    = 29000
+siguiente_global_entero     = 1000
+siguiente_global_decimal    = 3000
+siguiente_global_bool       = 5000
+siguiente_global_char       = 7000
+siguiente_entero            = 8000
+siguiente_decimal           = 10000
+siguiente_bool              = 12000
+siguiente_char              = 14000
+siguiente_constante_entera  = 15000
+siguiente_constante_decimal = 17000
+siguiente_constante_char    = 19000
 
 quadruple = [
     ['START', '-', '-', '-']
@@ -39,11 +41,10 @@ tipos       = []
 valores     = []    
 operaciones = []    
 saltos      = []
-conta       = 0
 
 ####  INSTRUCCIONES GENERALES DE PROGRAMA
 
-inicio = 'programa'
+start = 'programa'
 
 def p_programa(p):
     '''programa : PROGRAM ID SEMI vars funcion main
@@ -53,14 +54,15 @@ def p_programa(p):
     pass
 
 def p_main(p):
-    '''main : MAIN function_name main_name function_all end_main'''
+    '''main : MAIN function_name verifica_name function_all end_main'''
 
 def p_vars(p):
     '''vars : VAR list_vars'''
 
 def p_list_vars(p):
-    '''list_vars : list_vars COMMA ID vars_name vars_type
-                 | memType ID vars_name vars_type SEMI'''
+    '''list_vars : list_vars SEMI NEWLINE list_vars SEMI
+                 | list_vars COMMA ID vars_name vars_type SEMI
+                 | memType ID vars_name vars_type'''
 
 def p_func_vars(p):
     '''func_vars : memType ID vars_name vars_type param_type COMMA func_vars
@@ -90,7 +92,8 @@ def p_statement(p):
                  | statement_function SEMI
                  | statement_condition SEMI
                  | statement_while SEMI
-                 | statement_for SEMI'''
+                 | statement_read SEMI
+                 | statement_write SEMI'''
 
 def p_statement_assign(p):
     '''statement_assign : ID const_id EQ opera_add expression add_tabla'''
@@ -131,10 +134,10 @@ def p_const(p):
              | ID const_id'''
 
 def p_funcion(p):
-    '''funcion : FUNCION VOID loType ID function_name parametro rev_quad function_all fin_funcion SEMI funcion
-               | FUNCION memType ID function_name parametro rev_quad function_all fin_funcion SEMI funcion
-               | FUNCION VOID loType ID function_name parametro rev_quad function_all fin_funcion SEMI
-               | FUNCION memType ID function_name parametro rev_quad function_all fin_funcion SEMI'''
+    '''funcion : FUNCION VOID loType ID function_name parametro rev_quad function_all fin_funcion funcion
+               | FUNCION memType ID function_name parametro rev_quad function_all fin_funcion funcion
+               | FUNCION VOID loType ID function_name parametro rev_quad function_all fin_funcion
+               | FUNCION memType ID function_name parametro rev_quad function_all fin_funcion'''
 
 def p_parametro(p):
     '''parametro : LPARENT func_vars RPARENT
@@ -148,6 +151,9 @@ def p_funcion_aux(p):
     '''funcion_aux : expression revisar_parametro cuenta_parametro COMMA funcion_aux
                    | expression revisar_parametro'''
 
+#def p_statement_return(p):
+#    '''return : RETURN return_function LPARENT expression RPARENT return_save_quadruple'''
+
 def p_statement_condition(p):
     '''statement_condition : IF LPARENT expression RPARENT THEN revisar_expression bloque ELSE else_expression bloque condition_end
                            | IF LPARENT expression RPARENT THEN revisar_expression bloque condition_end'''
@@ -155,8 +161,19 @@ def p_statement_condition(p):
 def p_statement_while(p):
     '''statement_while : WHILE opera_while LPARENT expression RPARENT condicion_while DO bloque loop_while'''
 
-def p_statement_for(p):
-    '''statement_for : FOR ID const_id EQ expression TO expression DO bloque'''
+def p_statement_read(p):
+    '''statement_read : READ LPARENT read_1 RPARENT'''
+
+def p_read_1(p):
+    '''read_1 : ID read_instr read_1
+              | ID read_instr'''
+
+def p_statement_write(p):
+    '''statement_write : WRITE LPARENT write_1 RPARENT'''
+
+def p_write_1(p):
+    '''write_1 : ID write_instr write_1
+               | ID write_instr'''
 
 ####  FUNCIONES DE CONTROL
 # +++++++++++  TIPOS DE MEMORIAS  ++++++++++++++++++
@@ -169,14 +186,14 @@ def p_loType(p):
 def p_vars_name(p):
     'vars_name : '
     global tabla_simbolos,variable_actual,funcion_actual
-    if(funcion_actual == '#global'):
-        tabla_simbolos['#global']['vars'][p[-1]] = {
+    if(funcion_actual != '#global'):
+        tabla_simbolos[funcion_actual]['vars'][p[-1]] = {
             'type': None,
             'address': None
         }
         variable_actual = p[-1]
     else:
-        tabla_simbolos[funcion_actual]['vars'][p[-1]] = {
+        tabla_simbolos['#global']['vars'][p[-1]] = {
             'type': None,
             'address': None
         }
@@ -184,57 +201,67 @@ def p_vars_name(p):
 
 # +++++++++++  ASIGNACIÓN DE DIRECCIONES DE MEMORIA Y VARIABLES  +++++++++++++++++++
 def nueva_direccion():
-    global funcion_actual, variTipo_actual, siguiente_global_entero, siguiente_global_decimal, siguiente_global_char, siguiente_entero, siguiente_decimal, siguiente_char
+    global funcion_actual, variTipo_actual, siguiente_global_entero, siguiente_global_decimal, siguiente_global_bool, siguiente_global_char, siguiente_entero, siguiente_decimal, siguiente_bool, siguiente_char
     aux = 0
     if funcion_actual == '#global' or funcion_actual == 'main':
         if variTipo_actual == 'int':
-            if siguiente_global_entero > 14999:
+            if siguiente_global_entero > 2999:
                 error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
             aux = siguiente_global_entero
             siguiente_global_entero += 1
         elif variTipo_actual == 'float':
-            if siguiente_global_decimal > 18999:
+            if siguiente_global_decimal > 4999:
                 error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
             aux = siguiente_global_decimal
             siguiente_global_decimal += 1
+        elif variTipo_actual == 'bool':
+            if siguiente_global_bool > 6999:
+                error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
+            aux = siguiente_global_bool
+            siguiente_global_bool += 1            
         elif variTipo_actual == 'char':
-            if siguiente_global_char > 20999:
+            if siguiente_global_char > 7999:
                 error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
             aux = siguiente_global_char
             siguiente_global_char += 1
     else:
         if variTipo_actual == 'int':
-            if siguiente_entero > 4999:
+            if siguiente_entero > 9999:
                 error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
             aux = siguiente_entero
             siguiente_entero += 1
         elif variTipo_actual == 'float':
-            if siguiente_decimal > 8999:
+            if siguiente_decimal > 11999:
                 error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
             aux = siguiente_decimal
             siguiente_decimal += 1
+        elif variTipo_actual == 'bool':
+            if siguiente_bool > 13999:
+                error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
+            aux = siguiente_bool
+            siguiente_bool += 1
         elif variTipo_actual == 'char':
-            if siguiente_char > 10999:
+            if siguiente_char > 14999:
                 error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
             aux = siguiente_char
             siguiente_char += 1
     return aux
 
 def siguiente_constante_direccion(const_tipo):
-    global tipo, constantes, siguiente_constante_entera, siguiente_constante_decimal, siguiente_constante_char
+    global variTipo_actual, constantes, siguiente_constante_entera, siguiente_constante_decimal, siguiente_constante_char
     aux = 0
     if const_tipo == 'int':
-        if siguiente_constante_entera > 24999:
+        if siguiente_constante_entera > 16999:
             error('YA NO PUEDE AGREGAR MAS CONSTANTES ENTERAS')
         aux = siguiente_constante_entera
         siguiente_constante_entera += 1
     elif const_tipo == 'float':
-        if siguiente_constante_decimal > 28999:
+        if siguiente_constante_decimal > 18999:
             error('YA NO PUEDE AGREGAR MAS CONSTANTES DECIMALES')
         aux = siguiente_constante_decimal
         siguiente_constante_decimal += 1
     elif const_tipo == 'char':
-        if siguiente_constante_char > 30999:
+        if siguiente_constante_char > 19999:
             error('YA NO PUEDE AGREGAR MAS CONSTANTES CHAR')
         aux = siguiente_constante_char
         siguiente_constante_char += 1
@@ -249,23 +276,23 @@ def p_vars_type(p):
     }
 
 # ++++++++++++++++  REVISAR LOS IDENTIFICADORES GENERADOS  ++++++++++++++
-def address_find(id):
-    global tabla_simbolos, funcion_actual
-    if id in tabla_simbolos['#global']['vars']:
-        return tabla_simbolos['#global']['vars'][id]['address']
-    elif id in tabla_simbolos[funcion_actual]['vars']:
-        return tabla_simbolos[funcion_actual]['vars'][id]['address']
-    else:
-        error('LA VARIABLE {} NO TIENE UNA DIRECCION ASIGNADA'.format(id))
-
 def type_find(id):
     global tabla_simbolos, funcion_actual
-    if id in tabla_simbolos['#global']['vars']:
-        return tabla_simbolos['#global']['vars'][id]['type']
-    elif id in tabla_simbolos[funcion_actual]['vars']:
+    if id in tabla_simbolos[funcion_actual]['vars']:
         return tabla_simbolos[funcion_actual]['vars'][id]['type']
+    elif id in tabla_simbolos['#global']['vars']:
+        return tabla_simbolos['#global']['vars'][id]['type']
     else:
         error('LA VARIABLE {} NO TIENE UN TIPO ASIGNADO'.format(id))
+        
+def address_find(id):
+    global tabla_simbolos, funcion_actual
+    if id in tabla_simbolos[funcion_actual]['vars']:
+        return tabla_simbolos[funcion_actual]['vars'][id]['address']
+    elif id in tabla_simbolos['#global']['vars']:
+        return tabla_simbolos['#global']['vars'][id]['address']
+    else:
+        error('LA VARIABLE {} NO TIENE UNA DIRECCION ASIGNADA'.format(id))
 
 def p_const_id(p):
     'const_id : '
@@ -316,9 +343,9 @@ def p_add_tabla(p):
     id_t = tipos.pop()
     id = valores.pop()
     operador = operaciones.pop()
-    resCubo = MyRCubo.cubo_ret(id_t, res_tipo, '=')
-    if res_tipo == True and operador == '=':
-        quadruple.append(['=', res_val, '-', id])
+    resCubo = MyRCubo.cubo_ret(id_t,res_tipo,'=')
+    if resCubo == True and operador == '=':
+        quadruple.append(['=',res_val,'-',id])
     else:
         error('NO CONCUERDA {}. EL TIPO NO PUEDE SER ASIGNADO A {}'.format(id_t,res_tipo))
 
@@ -339,14 +366,14 @@ def p_term_muldiv(p):
 def p_expr_rel(p):
     'expr_rel : '
     identificador(['<', '<=', '>', '>=', '==', '!='])
-    
-def p_oper_y(p):
-    'oper_y : '
-    identificador(['&'])
 
 def p_oper_o(p):
     'oper_o : '
     identificador(['|'])
+    
+def p_oper_y(p):
+    'oper_y : '
+    identificador(['&'])
 
 def p_fondo_virtual(p):
     'fondo_virtual : '
@@ -364,69 +391,76 @@ def identificador(opera):
     global operaciones, tipos, quadruple, variTipo_actual
     if len(operaciones) > 0:
         if operaciones[-1] in opera:
-            op1 = valores.pop()
-            tipo1 = tipos.pop()
             op2 = valores.pop()
             tipo2 = tipos.pop()
+            op1 = valores.pop()
+            tipo1 = tipos.pop()
             op = operaciones.pop()
-            resultado = MyRCubo.cubo_ret(tipo2,tipo1,op)
+            resultado = MyRCubo.cubo_ret(tipo1,tipo2,op)
             if resultado != 'Error':
                 variTipo_actual = resultado
                 res = nueva_direccion()
-                quadruple.append([op,op2,op1,res])
+                quadruple.append([op,op1,op2,res])
                 valores.append(res)
                 tipos.append(resultado)
             else:
                 error('ERROR EN EL CUADRUPLO')
 
+# ++++++++++++++++++++++++  INICIO DEL CUADRUPLO  +++++++++++++
+def p_verifica_name(p):
+    'verifica_name : '
+    global quadruple
+    quadruple[0][3] = len(quadruple)
+
 # +++++++++++++++  DEFINICIÓN DE FUNCIONES PRINCIPAL Y CREADAS +++++++
+def p_param_type(p):
+    'param_type : '
+    global parametros, variTipo_actual, funcion_actual, variable_actual
+    direccion_parametro = tabla_simbolos[funcion_actual]['vars'][variable_actual]['address']
+    parametros.append([funcion_actual, variTipo_actual, direccion_parametro])
+
+def p_rev_quad(p):
+    'rev_quad : '
+    global quadruple, saltos
+    
 def p_function_name(p):
     'function_name : '
-    global tabla_simbolos, funcion_actual, variTipo_actual, siguiente_entero, siguente_decimal, siguiente_char, quadruple
-    siguiente_entero  = 1000
-    siguiente_decimal = 5000
-    siguiente_char    = 9000
-    funcion_nombre = p[-1]
+    global tabla_simbolos, funcion_actual, variTipo_actual, siguiente_entero, siguente_decimal, siguiente_bool, siguiente_char, quadruple
+    siguiente_entero  = 8000
+    siguiente_decimal = 10000
+    siguiente_bool    = 12000
+    siguiente_char    = 14000
+    fun_nombre        = p[-1]
 
-    if funcion_nombre in tabla_simbolos:
-        error('LA FUNCIÓN {} YA EXISTE'.format(funcion_nombre))
+    if fun_nombre in tabla_simbolos:
+        error('LA FUNCIÓN {} YA EXISTE'.format(fun_nombre))
 
-    if funcion_nombre in tabla_simbolos['#global']['vars']:
-        error('VARIABLE GLOBAL CON EL MISMO NOMBRE QUE LA FUNCION {}'.format(funcion_nombre))
+    if fun_nombre in tabla_simbolos['#global']['vars']:
+        error('VARIABLE GLOBAL CON EL MISMO NOMBRE QUE LA FUNCION {}'.format(fun_nombre))
     else:
-        tabla_simbolos['#global']['vars'][funcion_nombre] = {
+        tabla_simbolos['#global']['vars'][fun_nombre] = {
             'type':variTipo_actual,
             'address': nueva_direccion()
         }
 
     tabla_simbolos[p[-1]] = {
-        'vars': {},
+	'vars':{},
         'type': variTipo_actual,
-        'start': len(quadruple)
+        'start':len(quadruple)
     }
     funcion_actual = p[-1]
-
-def p_param_type(p):
-    'param_type : '
-    global parametros, variTipo_actual, funcion_actual, variable_actual
-    direccion_parametro = tabla_simbolos[funcion_actual]['vars'][variable_actual]['address']
-    parametros.append([funcion_actual,variTipo_actual,direccion_parametro])
-
-def p_rev_quad(p):
-    'rev_quad : '
-    global quadruple, saltos
 
 def p_fin_funcion(p):
     'fin_funcion : '
     global tabla_simbolos, quadruple, ret_flag
     tipo_funcion = tabla_simbolos['#global']['vars'][funcion_actual]['type']
-    if tipo_funcion == 'void':
-        quadruplet.append(['FINFUNC','-','-','-'])
-    elif tipo_funcion != 'void' and ret_flag == 1:
-        quadruplet.append(['FINFUNC','-','-','-'])
+    if tipo_funcion != 'void' and ret_flag == 1:
+        quadruple.append(['FINFUNC','-','-','-'])
         ret_flag = 0
+    elif tipo_funcion == 'void':
+        quadruple.append(['FINFUNC','-','-','-'])
     else:
-        error('FUNCION {} SIN CERRAR'.format(tipo_funcion))
+        error('FUNCION {} SIN CERRAR CON "RETURN"'.format(tipo_funcion))
 
 def p_existe_funcion(p):
     'existe_funcion : '
@@ -465,17 +499,17 @@ def p_revisar_parametro(p):
     global valores, tipos, quadruple, contador_parametro
     funcion_parametros = 0
     tipo_parametros = ''
-    argumento = valores.pop()
+    valor_argumento = valores.pop()
     tipo_argumento = tipos.pop()
     direccion = ''
     for i in range(len(parametros)):
         if parametros[i][0] == funcion_llamada:
             funcion_parametros += 1
-    if contador_parametros < funcion_parametros:
+    if contador_parametro < funcion_parametros:
         tipo_parametros = parametros[contador_parametro][1]
         direccion = parametros[contador_parametro][2]
         if tipo_argumento == tipo_parametros:
-            quad = ['PARAMETER', '-', argumento, direccion]
+            quad = ['PARAMETER', '-', valor_argumento, direccion]
             quadruple.append(quad)
         else:
             error('EL TIPO DE PARAMETRO NO COINCIDE CON {}'.format(tipo_parametros))
@@ -508,7 +542,7 @@ def p_condition_end(p):
     'condition_end : '
     global saltos
     fin = saltos.pop()
-    quadruple[fin][3] = len(quadruplet)
+    quadruple[fin][3] = len(quadruple)
 
 # ++++++++++++++++++++++  INSTRUCCIONES DE CICLO WHILE  ++++++++
 def p_opera_while(p):
@@ -526,7 +560,7 @@ def p_condicion_while(p):
         resultado = valores.pop()
         quad = ['GOTOFUN',resultado,'-',0]
         quadruple.append(quad)
-        saltos.append(len(quadruple-1))
+        saltos.append(len(quadruple)-1)
 
 def p_loop_while(p):
     'loop_while : '
@@ -535,13 +569,52 @@ def p_loop_while(p):
     back = saltos.pop()
     quad = ['GOTO','-','-',back]
     quadruple.append(quad)
-    quadrupe[fin][3] = len(quadruple)
-    
-# ++++++++++++++++++++++++  INICIO DEL CUADRUPLO  +++++++++++++
-def p_main_name(p):
-    'main_name : '
-    global quadruple
-    quadruple[0][3] = len(quadruple)
+    quadruple[fin][3] = len(quadruple)
+
+# +++++++++++++++++  INSTRUCCIONES DE LECTURA  ++++++++++++++++
+def p_read_instr(p):
+    'read_instr : '
+    global quadruple, valores
+    if len(valores) > 0:
+        res_valor = valores.pop()
+        quad = ['READ', '-', '-', res_valor]
+        quadruple.append(quad)
+        tipos.pop()
+
+# +++++++++++++++ INSTRUCCIONES DE ESCRITURA  +++++++++++++++++++++++
+def p_write_instr(p):
+    'write_instr : '
+    global quadruple, valores
+    if len(valores) > 0:
+        res_valor = valores.pop()
+        quad = ['WRITE', '-', '-', res_valor]
+        quadruple.append(quad)
+        tipos.pop()
+
+# +++++++++++++++++++  INSTRUCCION DE RETURN  +++++++++++++++++
+#def p_return_function(p):
+#    'return_function : '
+#    global funcion_actual, tabla_simbolos, ret_flag
+#    tipo_funcion = tabla_simbolos['#global']['vars'][funcion_actual]['type']
+#    if tipo_funcion == 'void':
+#        error('LA FUNCION NO LLEVA EL "RETURN"')
+#    else:
+#        ret_flag = 1
+
+#def p_return_save_quadruple(p):
+#    'return_save_quadruple : '
+#    global valores, tipos, quadruple, tabla_simbolos, funcion_actual
+#    valor = valores.pop()
+#    tipo = tipos.pop()
+#    tipo_funcion = tabla_simbolos[funcion_actual]['type']
+#    if tipo == tipo_funcion:
+#        quad = ['RETURN','-','-','-',valor]
+#        quadruple.append(quad)
+#        variable_funcion = tabla_simbolos['#global']['vars'][funcion_actual]['address']
+#        quadr = ['=',valor,'-',variable_funcion]
+#        quadruple.append(quadr)
+#    else:
+#        error('EL TIPO DE "RETURN" NO ES {}'.format(tipo_funcion))
 
 # ++++++++++++++++++++++  FIN DE FUNCIÓN MAIN Y DEL PROGRAMA ++++
 def p_end_main(p):

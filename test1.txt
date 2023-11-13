@@ -4,9 +4,5 @@ var int x,y;
 
 main {
     x = 2;
-    y = 3*x;
-
-    if (x > y) {
-	y = x;
-    }
+    y = x * 5;
 }
