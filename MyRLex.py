@@ -24,11 +24,10 @@ reservadas = {
     'newline':'NEWLINE',
     'read':'READ',
     'write':'WRITE',
-    'return':'RETURN'
 }
 
 tokens = list(reservadas.values()) + [
-    'ID', 'COMMENT',
+    'ID', 'COMMENT', 'RETURN',
     'INTEGERCTE', 'FLOATCTE', 'CHARCTE',
     'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'POWER', 'EQ',
     'LT', 'LTE', 'GT', 'GTE', 'SIM', 'NE',
@@ -60,6 +59,14 @@ t_COMMA    = r'\,'
 t_INTEGERCTE = r'[0-9][0-9]*'
 t_FLOATCTE   = r'[0-9][0-9]*\.[0-9]'
 t_CHARCTE    = r'(\'[^\']\')'
+
+def t_COMMENT(t):
+    r'\%% .*'
+    pass
+
+def t_RETURN(t):
+    r'return'
+    return t
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'

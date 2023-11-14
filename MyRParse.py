@@ -54,14 +54,14 @@ def p_programa(p):
     pass
 
 def p_main(p):
-    '''main : MAIN function_name verifica_name function_all end_main'''
+    '''main : MAIN function_name verifica_name LPARENT RPARENT function_all end_main'''
 
 def p_vars(p):
-    '''vars : VAR list_vars'''
+    '''vars : vars list_vars SEMI
+            | VAR list_vars SEMI'''
 
 def p_list_vars(p):
-    '''list_vars : list_vars SEMI NEWLINE list_vars SEMI
-                 | list_vars COMMA ID vars_name vars_type SEMI
+    '''list_vars : list_vars COMMA ID vars_name vars_type
                  | memType ID vars_name vars_type'''
 
 def p_func_vars(p):
@@ -90,10 +90,11 @@ def p_statement_func(p):
 def p_statement(p):
     '''statement : statement_assign SEMI
                  | statement_function SEMI
-                 | statement_condition SEMI
-                 | statement_while SEMI
+                 | statement_condition
+                 | statement_while
                  | statement_read SEMI
-                 | statement_write SEMI'''
+                 | statement_write SEMI
+                 | statement_return SEMI'''
 
 def p_statement_assign(p):
     '''statement_assign : ID const_id EQ opera_add expression add_tabla'''
@@ -151,9 +152,6 @@ def p_funcion_aux(p):
     '''funcion_aux : expression revisar_parametro cuenta_parametro COMMA funcion_aux
                    | expression revisar_parametro'''
 
-#def p_statement_return(p):
-#    '''return : RETURN return_function LPARENT expression RPARENT return_save_quadruple'''
-
 def p_statement_condition(p):
     '''statement_condition : IF LPARENT expression RPARENT THEN revisar_expression bloque ELSE else_expression bloque condition_end
                            | IF LPARENT expression RPARENT THEN revisar_expression bloque condition_end'''
@@ -174,6 +172,9 @@ def p_statement_write(p):
 def p_write_1(p):
     '''write_1 : ID write_instr write_1
                | ID write_instr'''
+
+def p_statement_return(p):
+    '''statement_return : RETURN return_function LPARENT expression RPARENT return_save_quadruple'''
 
 ####  FUNCIONES DE CONTROL
 # +++++++++++  TIPOS DE MEMORIAS  ++++++++++++++++++
@@ -553,7 +554,7 @@ def p_opera_while(p):
 def p_condicion_while(p):
     'condicion_while : '
     global tipos, valores, quadruple, saltos
-    tipos_while = topos.pop()
+    tipos_while = tipos.pop()
     if tipos_while != 'bool':
         error('EL TIPO DE VARIABLE NO CORRESPONDE CON LA EVALUACION DE LA CONDICION: {}'.format(tipos_while))
     else:
@@ -592,29 +593,29 @@ def p_write_instr(p):
         tipos.pop()
 
 # +++++++++++++++++++  INSTRUCCION DE RETURN  +++++++++++++++++
-#def p_return_function(p):
-#    'return_function : '
-#    global funcion_actual, tabla_simbolos, ret_flag
-#    tipo_funcion = tabla_simbolos['#global']['vars'][funcion_actual]['type']
-#    if tipo_funcion == 'void':
-#        error('LA FUNCION NO LLEVA EL "RETURN"')
-#    else:
-#        ret_flag = 1
+def p_return_function(p):
+    'return_function : '
+    global funcion_actual, tabla_simbolos, ret_flag
+    tipo_funcion = tabla_simbolos['#global']['vars'][funcion_actual]['type']
+    if tipo_funcion == 'void':
+        error('LA FUNCION NO LLEVA EL "RETURN"')
+    else:
+        ret_flag = 1
 
-#def p_return_save_quadruple(p):
-#    'return_save_quadruple : '
-#    global valores, tipos, quadruple, tabla_simbolos, funcion_actual
-#    valor = valores.pop()
-#    tipo = tipos.pop()
-#    tipo_funcion = tabla_simbolos[funcion_actual]['type']
-#    if tipo == tipo_funcion:
-#        quad = ['RETURN','-','-','-',valor]
-#        quadruple.append(quad)
-#        variable_funcion = tabla_simbolos['#global']['vars'][funcion_actual]['address']
-#        quadr = ['=',valor,'-',variable_funcion]
-#        quadruple.append(quadr)
-#    else:
-#        error('EL TIPO DE "RETURN" NO ES {}'.format(tipo_funcion))
+def p_return_save_quadruple(p):
+    'return_save_quadruple : '
+    global valores, tipos, quadruple, tabla_simbolos, funcion_actual
+    valor = valores.pop()
+    tipo = tipos.pop()
+    tipo_funcion = tabla_simbolos[funcion_actual]['type']
+    if tipo == tipo_funcion:
+        quad = ['RETURN','-','-','-',valor]
+        quadruple.append(quad)
+        variable_funcion = tabla_simbolos['#global']['vars'][funcion_actual]['address']
+        quadr = ['=',valor,'-',variable_funcion]
+        quadruple.append(quadr)
+    else:
+        error('EL TIPO DE "RETURN" NO ES {}'.format(tipo_funcion))
 
 # ++++++++++++++++++++++  FIN DE FUNCIÓN MAIN Y DEL PROGRAMA ++++
 def p_end_main(p):

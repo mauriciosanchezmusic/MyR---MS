@@ -1,8 +1,36 @@
+%% PROGRAMA DE PRUEBA DE MyR
+
 program test1;
 
-var int x,y;
+var 
+    int i,j,p;
+    float valor;
 
-main {
-    x = 2;
-    y = x * 5;
+funcion int fact(int j) {
+    var int i, res;
+
+    i = j + (p -j * 2 + j);
+    res = 10;
+    p = 23;
+    if (res < p) then {
+	return(i);
+    } else {
+	return(j);
+    }
+}
+
+funcion void calcula(int y) {
+    var int x;
+    x = 1;
+    while(x < 10) do {
+	write(x);
+	x = x + 1;
+    }
+}
+
+main() {
+    read(p);
+    j = p * 2;
+    calcula(p - 1);
+    write(j);
 }

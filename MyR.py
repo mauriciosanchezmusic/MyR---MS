@@ -24,4 +24,15 @@ data = file.read()
 prog = MyRParse.parse(data)
 print_object()
 
+nameSplit = fileToRead.split(".",1)
+fileToWrite = nameSplit[0]
+
+with open(fileToWrite + '.o', 'w') as file:
+    save_data = {
+        'symbol_table':MyRParse.tabla_simbolos,
+        'constant_table':MyRParse.constantes,
+        'quadruple':MyRParse.quadruple,
+    }
+    file.write(str(save_data))
+
 file.close()
