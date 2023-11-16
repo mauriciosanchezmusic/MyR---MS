@@ -28,10 +28,10 @@ reservadas = {
 
 tokens = list(reservadas.values()) + [
     'ID', 'COMMENT', 'RETURN',
-    'INTEGERCTE', 'FLOATCTE', 'CHARCTE',
+    'INTEGERCTE', 'FLOATCTE', 'CHARCTE', 'STRINGCTE',
     'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'POWER', 'EQ',
     'LT', 'LTE', 'GT', 'GTE', 'SIM', 'NE',
-    'LPARENT', 'RPARENT', 'LBRACKET', 'RBRACKET',
+    'LPARENT', 'RPARENT', 'LBRACKET', 'RBRACKET', 'LSQUARE', 'RSQUARE',
     'AND', 'OR',
     'SEMI', 'COMMA',
 ]
@@ -54,11 +54,14 @@ t_LPARENT  = r'\('
 t_RPARENT  = r'\)'
 t_LBRACKET = r'\{'
 t_RBRACKET = r'\}'
+t_LSQUARE  = r'\['
+t_RSQUARE  = r'\]'
 t_SEMI     = r';'
 t_COMMA    = r'\,'
 t_INTEGERCTE = r'[0-9][0-9]*'
 t_FLOATCTE   = r'[0-9][0-9]*\.[0-9]'
 t_CHARCTE    = r'(\'[^\']\')'
+t_STRINGCTE  = r'\"[\w\d\s\,. ]*\"'
 
 def t_COMMENT(t):
     r'\%% .*'

@@ -1,0 +1,17 @@
+%% PROGRAMA DE PRUEBA DE MyR
+%%  - Programa para probar el compilador y máquina virtual usando operaciones aritméticas
+
+program aritmetica;
+
+var
+    int a,b,c;
+
+main() {
+    var float aux;
+    a = 1;
+    b = 10;
+    c = 25;
+    aux = (b ^ 2) - 4 * a * c;
+    write(a);
+    write(aux);
+}

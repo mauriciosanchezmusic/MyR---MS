@@ -32,6 +32,7 @@ siguiente_char              = 14000
 siguiente_constante_entera  = 15000
 siguiente_constante_decimal = 17000
 siguiente_constante_char    = 19000
+siguiente_constante_string  = 20000
 
 quadruple = [
     ['START', '-', '-', '-']
@@ -61,8 +62,13 @@ def p_vars(p):
             | VAR list_vars SEMI'''
 
 def p_list_vars(p):
-    '''list_vars : list_vars COMMA ID vars_name vars_type
+    '''list_vars : list_vars COMMA vars_array
+                 | list_vars COMMA ID vars_name vars_type
+                 | memType vars_array
                  | memType ID vars_name vars_type'''
+
+def p_vars_array(p):
+    '''vars_array : ID vars_name vars_type LSQUARE const RSQUARE'''
 
 def p_func_vars(p):
     '''func_vars : memType ID vars_name vars_type param_type COMMA func_vars
@@ -89,9 +95,12 @@ def p_statement_func(p):
 
 def p_statement(p):
     '''statement : statement_assign SEMI
+                 | statement_assign_array SEMI
+                 | statement_array_expression SEMI
                  | statement_function SEMI
                  | statement_condition
                  | statement_while
+                 | statement_for
                  | statement_read SEMI
                  | statement_write SEMI
                  | statement_return SEMI'''
@@ -144,6 +153,12 @@ def p_parametro(p):
     '''parametro : LPARENT func_vars RPARENT
                  | LPARENT RPARENT'''
 
+def p_statement_assign_array(p):
+    ''' statement_assign_array : ID const_id EQ opera_add vars_array add_tabla'''
+
+def p_statement_array_expression(p):
+    '''statement_array_expression : vars_array EQ opera_add expression add_tabla'''
+
 def p_statement_function(p):
     '''statement_function : ID existe_funcion crea_funcion LPARENT funcion_aux verifica_param RPARENT crea_subfuncion
                           | ID existe_funcion crea_funcion LPARENT RPARENT crea_subfuncion'''
@@ -159,6 +174,9 @@ def p_statement_condition(p):
 def p_statement_while(p):
     '''statement_while : WHILE opera_while LPARENT expression RPARENT condicion_while DO bloque loop_while'''
 
+def p_statement_for(p):
+    '''statement_for : FOR opera_for statement_assign TO const condicion_for DO bloque loop_for'''
+
 def p_statement_read(p):
     '''statement_read : READ LPARENT read_1 RPARENT'''
 
@@ -170,8 +188,10 @@ def p_statement_write(p):
     '''statement_write : WRITE LPARENT write_1 RPARENT'''
 
 def p_write_1(p):
-    '''write_1 : ID write_instr write_1
-               | ID write_instr'''
+    '''write_1 : expression write_instr COMMA write_1
+               | STRINGCTE const_str write_instr COMMA write_1
+               | expression write_instr
+               | STRINGCTE const_str write_instr'''
 
 def p_statement_return(p):
     '''statement_return : RETURN return_function LPARENT expression RPARENT return_save_quadruple'''
@@ -249,7 +269,7 @@ def nueva_direccion():
     return aux
 
 def siguiente_constante_direccion(const_tipo):
-    global variTipo_actual, constantes, siguiente_constante_entera, siguiente_constante_decimal, siguiente_constante_char
+    global variTipo_actual, constantes, siguiente_constante_entera, siguiente_constante_decimal, siguiente_constante_char, siguiente_constante_string
     aux = 0
     if const_tipo == 'int':
         if siguiente_constante_entera > 16999:
@@ -266,6 +286,11 @@ def siguiente_constante_direccion(const_tipo):
             error('YA NO PUEDE AGREGAR MAS CONSTANTES CHAR')
         aux = siguiente_constante_char
         siguiente_constante_char += 1
+    elif const_tipo == 'string':
+        if siguiente_constante_string > 20999:
+            error('YA NO PUEDE AGREGAR MAS CONSTANTES TIPO STRING')
+        aux = siguiente_constante_string
+        siguiente_constante_string += 1
     return aux
 
 def p_vars_type(p):
@@ -276,7 +301,7 @@ def p_vars_type(p):
         'address':nueva_direccion()
     }
 
-# ++++++++++++++++  REVISAR LOS IDENTIFICADORES GENERADOS  ++++++++++++++
+# ++++++++++++++++  GUARDAR Y REVISAR LOS IDENTIFICADORES GENERADOS  ++++++++++++++
 def type_find(id):
     global tabla_simbolos, funcion_actual
     if id in tabla_simbolos[funcion_actual]['vars']:
@@ -335,6 +360,19 @@ def p_const_char(p):
         }
     valores.append(constantes[const_char]['address'])
     tipos.append('char')
+
+def p_const_str(p):
+    'const_str : '
+    global valores, tipos, constantes, siguiente_constante_string
+    const_str = p[-1]
+    const_str = const_str[1:-1]
+    if const_str not in constantes:
+        constantes[const_str] = {
+            'address' : siguiente_constante_direccion('string'),
+            'type' : 'string'
+        }
+    valores.append(constantes[const_str]['address'])
+    tipos.append('string')
 
 def p_add_tabla(p):
     'add_tabla : '
@@ -413,7 +451,7 @@ def p_verifica_name(p):
     global quadruple
     quadruple[0][3] = len(quadruple)
 
-# +++++++++++++++  DEFINICIÓN DE FUNCIONES PRINCIPAL Y CREADAS +++++++
+# +++++++++++++++  DEFINICIÓN DE FUNCIONES: PRINCIPAL Y PROGRAMADAS POR USUARIO +++++++
 def p_param_type(p):
     'param_type : '
     global parametros, variTipo_actual, funcion_actual, variable_actual
@@ -565,6 +603,33 @@ def p_condicion_while(p):
 
 def p_loop_while(p):
     'loop_while : '
+    global saltos, quadruple
+    fin = saltos.pop()
+    back = saltos.pop()
+    quad = ['GOTO','-','-',back]
+    quadruple.append(quad)
+    quadruple[fin][3] = len(quadruple)
+
+# ++++++++++++++++++  INSTRUCCIONES DE CICLO FOR  ++++++++++++++++
+def p_opera_for(p):
+    'opera_for : '
+    global saltos, quadruple
+    saltos.append(len(quadruple))
+
+def p_condicion_for(p):
+    'condicion_for : '
+    global tipos, valores, quadruple, saltos
+    tipo_for = tipos.pop()
+    if tipo_for != 'int':
+        error('EL TIPO DE VARIABLE NO CORRESPONDE CON LA EVALUACION DE LA CONDICION: {}'.format(tipo_for))
+    else:
+        resultado = valores.pop()
+        quad = ['GOTOFUN',resultado,'-',0]
+        quadruple.append(quad)
+        saltos.append(len(quadruple)-1)
+
+def p_loop_for(p):
+    'loop_for : '
     global saltos, quadruple
     fin = saltos.pop()
     back = saltos.pop()
