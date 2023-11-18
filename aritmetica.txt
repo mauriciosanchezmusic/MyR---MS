@@ -4,14 +4,13 @@
 program aritmetica;
 
 var
-    int a,b,c;
+    int i,j,p;
+    float valor;
+
 
 main() {
-    var float aux;
-    a = 1;
-    b = 10;
-    c = 25;
-    aux = (b ^ 2) - 4 * a * c;
-    write(a);
-    write(aux);
+    read(p);
+    j = p * 2;
+    valor = j / p;
+    write(j, valor);
 }

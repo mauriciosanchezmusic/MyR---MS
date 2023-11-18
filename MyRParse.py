@@ -164,8 +164,8 @@ def p_statement_function(p):
                           | ID existe_funcion crea_funcion LPARENT RPARENT crea_subfuncion'''
 
 def p_funcion_aux(p):
-    '''funcion_aux : expression revisar_parametro cuenta_parametro COMMA funcion_aux
-                   | expression revisar_parametro'''
+    '''funcion_aux : expression revisar_parametro
+                   | expression revisar_parametro cuenta_parametro COMMA funcion_aux'''
 
 def p_statement_condition(p):
     '''statement_condition : IF LPARENT expression RPARENT THEN revisar_expression bloque ELSE else_expression bloque condition_end
@@ -641,11 +641,9 @@ def p_loop_for(p):
 def p_read_instr(p):
     'read_instr : '
     global quadruple, valores
-    if len(valores) > 0:
-        res_valor = valores.pop()
-        quad = ['READ', '-', '-', res_valor]
-        quadruple.append(quad)
-        tipos.pop()
+    dir_valor = address_find(p[-1])
+    quad = ['READ','-','-',dir_valor]
+    quadruple.append(quad)
 
 # +++++++++++++++ INSTRUCCIONES DE ESCRITURA  +++++++++++++++++++++++
 def p_write_instr(p):

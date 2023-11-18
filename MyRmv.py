@@ -54,7 +54,7 @@ def leer_mem(direccion, prof=-1):
     elif dir_t >= 19000 and dir_t < 20000:
         val = str(const_finales.get(direccion, None))
     elif dir_t >= 20000 and dir_t > 21000:
-        val = const_finales.get(direccion, None)
+        val = str(const_finales.get(direccion, None))
 
     if val is None:
         error('ACCESO A UNA VARIABLE NO ASIGNADA')
@@ -67,7 +67,9 @@ def escribir_mem(direccion, valor, prof=-1):
     global memoriaG, memoriaL
     dir_t = int(direccion)
 
-    if dir_t >= 8000 and dir_t < 12000 and dir_t >= 20000:
+    if dir_t >= 8000 and dir_t < 12000:
+        memoriaL[prof][dir_t] = valor
+    elif dir_t >= 20000 and dir_t < 21000:
         memoriaL[prof][dir_t] = valor
     else:
         memoriaG[dir_t] = valor
@@ -81,6 +83,7 @@ while actual[-1] != -1:
         actual[-1] = quadruple_in[actual[-1]][3]
     elif quadruple_in[actual[-1]][0] == 'END':
         actual[-1] = -1
+        
     # operacion suma y resta
     elif quadruple_in[actual[-1]][0] == '+':
         val1 = leer_mem(quadruple_in[actual[-1]][1])
@@ -94,6 +97,7 @@ while actual[-1] != -1:
         res = val1 - val2
         escribir_mem(quadruple_in[actual[-1]][3], res)
         actual[-1] = actual[-1]+1
+        
     # operacion multiplicación, división y potencia
     elif quadruple_in[actual[-1]][0] == '*':
         val1 = leer_mem(quadruple_in[actual[-1]][1])
@@ -117,15 +121,130 @@ while actual[-1] != -1:
         res = val1 ** val2
         escribir_mem(quadruple_in[actual[-1]][3], res)
         actual[-1] = actual[-1]+1
+        
     # operación para asignar valores a variables
     elif quadruple_in[actual[-1]][0] == '=':
         val1 = leer_mem(quadruple_in[actual[-1]][1])
         escribir_mem(quadruple_in[actual[-1]][3], val1)
         actual[-1] = actual[-1]+1
+        
+    # operaciones relacionales
+    elif quadruple_in[actual[-1]][0] == '<':
+        val1 = leer_mem(quadruple_in[actual[-1]][1])
+        val2 = leer_mem(quadruple_in[actual[-1]][2])
+        if val1 < val2:
+            res = 2
+        else:
+            res = 1
+        escribir_mem(quadruple_in[actual[-1]][3], res)
+        actual[-1] = actual[-1]+1
+    elif quadruple_in[actual[-1]][0] == '<=':
+        val1 = leer_mem(quadruple_in[actual[-1]][1])
+        val2 = leer_mem(quadruple_in[actual[-1]][2])
+        if val1 <= val2:
+            res = 2
+        else:
+            res = 1
+        escribir_mem(quadruple_in[actual[-1]][3], res)
+        actual[-1] = actual[-1]+1
+    elif quadruple_in[actual[-1]][0] == '>':
+        val1 = leer_mem(quadruple_in[actual[-1]][1])
+        val2 = leer_mem(quadruple_in[actual[-1]][2])
+        if val1 > val2:
+            res = 2
+        else:
+            res = 1
+        escribir_mem(quadruple_in[actual[-1]][3], res)
+        actual[-1] = actual[-1]+1
+    elif quadruple_in[actual[-1]][0] == '>=':
+        val1 = leer_mem(quadruple_in[actual[-1]][1])
+        val2 = leer_mem(quadruple_in[actual[-1]][2])
+        if val1 >= val2:
+            res = 2
+        else:
+            res = 1
+        escribir_mem(quadruple_in[actual[-1]][3], res)
+        actual[-1] = actual[-1]+1
+    elif quadruple_in[actual[-1]][0] == '==':
+        val1 = leer_mem(quadruple_in[actual[-1]][1])
+        val2 = leer_mem(quadruple_in[actual[-1]][2])
+        if val1 == val2:
+            res = 2
+        else:
+            res = 1
+        escribir_mem(quadruple_in[actual[-1]][3], res)
+        actual[-1] = actual[-1]+1
+    elif quadruple_in[actual[-1]][0] == '!=':
+        val1 = leer_mem(quadruple_in[actual[-1]][1])
+        val2 = leer_mem(quadruple_in[actual[-1]][2])
+        if val1 != val2:
+            res = 2
+        else:
+            res = 1
+        escribir_mem(quadruple_in[actual[-1]][3], res)
+        actual[-1] = actual[-1]+1
+
+    # operaciones lógicas
+    elif quadruple_in[actual[-1]][0] == '&':
+        val1 = leer_mem(quadruple_in[actual[-1]][1])
+        val2 = leer_mem(quadruple_in[actual[-1]][2])
+        if val1 == 2 and val2 == 2:
+            res = 2
+        else:
+            res = 1
+        escribir_mem(quadruple_in[actual[-1]][3], res)
+        actual[-1] = actual[-1]+1
+    elif quadruple_in[actual[-1]][0] == '|':
+        val1 = leer_mem(quadruple_in[actual[-1]][1])
+        val2 = leer_mem(quadruple_in[actual[-1]][2])
+        if val1 == 2 or val2 == 2:
+            res = 2
+        else:
+            res = 1
+        escribir_mem(quadruple_in[actual[-1]][3], res)
+        actual[-1] = actual[-1]+1
+
+    # Instrucciones para manejar los saltos en contador de programa
+    elif quadruple_in[actual[-1]][0] == 'GOTOFUN':
+        val1 = leer_mem(quadruple_in[actual[-1]][1])
+        if val1 == 1:
+            actual[-1] = quadruple_in[actual[-1]][3]
+        else:
+            actual[-1] = actual[-1]+1
+    elif quadruple_in[actual[-1]][0] == 'GOTO':
+        actual[-1] = quadruple_in[actual[-1]][3]
+    elif quadruple_in[actual[-1]][0] == 'ERA':
+        memoriaL.append({})
+        funcion_actual = quadruple_in[actual[-1]][3]
+        actual[-1] = actual[-1]+1
+    elif quadruple_in[actual[-1]][0] == 'GOTOSUB':
+        funcion_actual = quadruple_in[actual[-1]][3]
+        actual[-1] = actual[-1]+1
+        actual.append(tabla_simbolos_in[funcion_actual]['start'])
+    elif quadruple_in[actual[-1]][0] == 'PARAMETER':
+        dir_or = quadruple_in[actual[-1]][2]
+        val_or = leer_mem(dir_or, -2)
+        dir_des = quadruple_in[actual[-1]][3]
+        escribir_mem(dir_des, dir_or)
+        actual[-1] = actual[-1]+1
+    elif quadruple_in[actual[-1]][0] == 'RETURN':
+        dir_t = tablas_simbolos_in['#global']['vars'][funcion_actual]['address']
+        escribir_mem(dir_t, quadruple_in[actual[-1]][3])
+        actual[-1] = actual[-1]+1
+    elif quadruple_in[actual[-1]][0] == 'FINFUNC':
+        memoriaL.pop()
+        actual.pop()
+            
     # operación para escribir resultados en pantalla
     elif quadruple_in[actual[-1]][0] == 'WRITE':
         val1 = leer_mem(quadruple_in[actual[-1]][3])
         print(val1)
+        actual[-1] = actual[-1]+1
+
+    # operacion para leer datos escritos en teclado
+    elif quadruple_in[actual[-1]][0] == 'READ':
+        res = input()
+        escribir_mem(quadruple_in[actual[-1]][3], res)
         actual[-1] = actual[-1]+1
 
     else:
