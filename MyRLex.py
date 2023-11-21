@@ -29,7 +29,7 @@ reservadas = {
 tokens = list(reservadas.values()) + [
     'ID', 'COMMENT', 'RETURN',
     'INTEGERCTE', 'FLOATCTE', 'CHARCTE', 'STRINGCTE',
-    'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'POWER', 'EQ',
+    'PLUS', 'MINUS', 'TIMES', 'DIVENT', 'DIVIDE', 'MODULE', 'POWER', 'EQ',
     'LT', 'LTE', 'GT', 'GTE', 'SIM', 'NE',
     'LPARENT', 'RPARENT', 'LBRACKET', 'RBRACKET', 'LSQUARE', 'RSQUARE',
     'AND', 'OR',
@@ -39,7 +39,9 @@ tokens = list(reservadas.values()) + [
 t_PLUS     = r'\+'
 t_MINUS    = r'-'
 t_TIMES    = r'\*'
+t_DIVENT   = r'//'
 t_DIVIDE   = r'/'
+t_MODULE   = r'%'
 t_POWER    = r'\^'
 t_EQ       = r'='
 t_LT       = r'<'

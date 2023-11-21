@@ -3,17 +3,19 @@ import sys
 ## +++++++++++++  LEER ARCHIVO OBJETO GENERADO POR COMPILADOR  +++++++++++
 nameFile = sys.argv[1]
 with open(nameFile, 'r') as file:
-    global tabla_simbolos, quadruple, constantes
+    global tabla_simbolos, tabla_vectores, quadruple, constantes
     data = file.read()
     entrada = eval(data)
     tabla_simbolos_in = entrada['symbol_table']
+    tabla_vectores_in = entrada['vector_table']
     quadruple_in = entrada['quadruple']
     const_in = entrada['constant_table']
 
 ## ++++++++++++  LEER Y ASIGNAR MEMORIAS PARA DIRECCIONES LOCALES Y GLOBALES
-global memoriaG, memoriaL, const_finales, funcion_actual
+global memoriaG, memoriaL, memoriaV, const_finales, funcion_actual
 memoriaG       = {}
 memoriaL       = []
+memoriaV       = {}
 const_finales  = {}
 funcion_actual = 'main'
 
@@ -46,6 +48,13 @@ def leer_mem(direccion, prof=-1):
         val = int(memoriaL[prof].get(direccion, None))
     elif dir_t >= 14000 and dir_t < 15000:
         val = str(memoriaL[prof].get(direccion, None))
+    # direcciones de vector
+    elif dir_t >= 30000 and dir_t < 39000:
+        val = int(memoriaV.get(direccion, None))
+    elif dir_t >= 40000 and dir_t < 49000:
+        val = float(memoriaV.get(direccion, None))
+    elif dir_t >= 50000 and dir_t < 59000:
+        val = str(memoriaV.get(direccion, None))
     # direcciones de constantes
     elif dir_t >= 15000 and dir_t < 17000:
         val = int(const_finales.get(direccion, None))
@@ -53,7 +62,7 @@ def leer_mem(direccion, prof=-1):
         val = float(const_finales.get(direccion, None))
     elif dir_t >= 19000 and dir_t < 20000:
         val = str(const_finales.get(direccion, None))
-    elif dir_t >= 20000 and dir_t > 21000:
+    elif dir_t >= 20000 and dir_t < 21000:
         val = str(const_finales.get(direccion, None))
 
     if val is None:
@@ -71,6 +80,8 @@ def escribir_mem(direccion, valor, prof=-1):
         memoriaL[prof][dir_t] = valor
     elif dir_t >= 20000 and dir_t < 21000:
         memoriaL[prof][dir_t] = valor
+    elif dir_t >= 30000 and dir_t < 59000:
+        memoriaV[dir_t] = valor
     else:
         memoriaG[dir_t] = valor
 
@@ -105,6 +116,16 @@ while actual[-1] != -1:
         res = val1 * val2
         escribir_mem(quadruple_in[actual[-1]][3], res)
         actual[-1] = actual[-1]+1
+    elif quadruple_in[actual[-1]][0] == '//':
+        val1 = leer_mem(quadruple_in[actual[-1]][1])
+        val2 = leer_mem(quadruple_in[actual[-1]][2])
+        if val2 == 0:
+            error("NO SE PUEDE HACER LA DIVISIÓN PORQUE ES UNA DIVISION ENTRE 0")
+            actual[-1] = -1
+        else:
+            res = val1 // val2
+            escribir_mem(quadruple_in[actual[-1]][3], res)
+        actual[-1] = actual[-1]+1
     elif quadruple_in[actual[-1]][0] == '/':
         val1 = leer_mem(quadruple_in[actual[-1]][1])
         val2 = leer_mem(quadruple_in[actual[-1]][2])
@@ -113,6 +134,16 @@ while actual[-1] != -1:
             actual[-1] = -1
         else:
             res = val1 / val2
+            escribir_mem(quadruple_in[actual[-1]][3], res)
+        actual[-1] = actual[-1]+1
+    elif quadruple_in[actual[-1]][0] == '%':
+        val1 = leer_mem(quadruple_in[actual[-1]][1])
+        val2 = leer_mem(quadruple_in[actual[-1]][2])
+        if val2 == 0:
+            error("NO SE PUEDE HACER LA DIVISIÓN PORQUE ES UNA DIVISION ENTRE 0")
+            actual[-1] = -1
+        else:
+            res = val1 % val2
             escribir_mem(quadruple_in[actual[-1]][3], res)
         actual[-1] = actual[-1]+1
     elif quadruple_in[actual[-1]][0] == '^':
@@ -228,7 +259,7 @@ while actual[-1] != -1:
         escribir_mem(dir_des, dir_or)
         actual[-1] = actual[-1]+1
     elif quadruple_in[actual[-1]][0] == 'RETURN':
-        dir_t = tablas_simbolos_in['#global']['vars'][funcion_actual]['address']
+        dir_t = tabla_simbolos_in['#global']['vars'][funcion_actual]['address']
         escribir_mem(dir_t, quadruple_in[actual[-1]][3])
         actual[-1] = actual[-1]+1
     elif quadruple_in[actual[-1]][0] == 'FINFUNC':

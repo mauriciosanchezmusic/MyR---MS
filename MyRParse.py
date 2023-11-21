@@ -15,6 +15,12 @@ tabla_simbolos = {
     }
 }
 
+tabla_vectores = {
+    '#global': {
+        'vector': {},
+    }
+}
+
 parametros         = []
 contador_parametro = 0
 funcion_llamada    = ''
@@ -33,6 +39,9 @@ siguiente_constante_entera  = 15000
 siguiente_constante_decimal = 17000
 siguiente_constante_char    = 19000
 siguiente_constante_string  = 20000
+siguiente_vector_entero     = 30000
+siguiente_vector_decimal    = 40000
+siguiente_vector_char       = 50000
 
 quadruple = [
     ['START', '-', '-', '-']
@@ -42,6 +51,8 @@ tipos       = []
 valores     = []    
 operaciones = []    
 saltos      = []
+
+instruccion_for = 0
 
 ####  INSTRUCCIONES GENERALES DE PROGRAMA
 
@@ -68,7 +79,7 @@ def p_list_vars(p):
                  | memType ID vars_name vars_type'''
 
 def p_vars_array(p):
-    '''vars_array : ID vars_name vars_type LSQUARE const RSQUARE'''
+    '''vars_array : ID vars_name vars_type LSQUARE const RSQUARE add_memory'''
 
 def p_func_vars(p):
     '''func_vars : memType ID vars_name vars_type param_type COMMA func_vars
@@ -95,8 +106,6 @@ def p_statement_func(p):
 
 def p_statement(p):
     '''statement : statement_assign SEMI
-                 | statement_assign_array SEMI
-                 | statement_array_expression SEMI
                  | statement_function SEMI
                  | statement_condition
                  | statement_while
@@ -106,7 +115,8 @@ def p_statement(p):
                  | statement_return SEMI'''
 
 def p_statement_assign(p):
-    '''statement_assign : ID const_id EQ opera_add expression add_tabla'''
+    '''statement_assign : ID const_id EQ opera_add expression add_tabla
+                        | ID const_id LSQUARE const read_index RSQUARE EQ opera_add expression add_tabla'''
 
 def p_expression(p):
     '''expression : expr oper_y AND opera_add expression
@@ -132,10 +142,12 @@ def p_expr_sumres(p):
 
 def p_expr_muldiv(p):
     '''expr_muldiv : const term_muldiv TIMES opera_add expr_muldiv
+                   | const term_muldiv DIVENT opera_add expr_muldiv
                    | const term_muldiv DIVIDE opera_add expr_muldiv
+                   | const term_muldiv MODULE opera_add expr_muldiv
                    | const term_muldiv POWER opera_add expr_muldiv
                    | const term_muldiv'''
-
+    
 def p_const(p):
     '''const : LPARENT fondo_virtual expression RPARENT pop_fondo_virtual
              | INTEGERCTE const_int
@@ -153,12 +165,6 @@ def p_parametro(p):
     '''parametro : LPARENT func_vars RPARENT
                  | LPARENT RPARENT'''
 
-def p_statement_assign_array(p):
-    ''' statement_assign_array : ID const_id EQ opera_add vars_array add_tabla'''
-
-def p_statement_array_expression(p):
-    '''statement_array_expression : vars_array EQ opera_add expression add_tabla'''
-
 def p_statement_function(p):
     '''statement_function : ID existe_funcion crea_funcion LPARENT funcion_aux verifica_param RPARENT crea_subfuncion
                           | ID existe_funcion crea_funcion LPARENT RPARENT crea_subfuncion'''
@@ -175,7 +181,7 @@ def p_statement_while(p):
     '''statement_while : WHILE opera_while LPARENT expression RPARENT condicion_while DO bloque loop_while'''
 
 def p_statement_for(p):
-    '''statement_for : FOR opera_for statement_assign TO const condicion_for DO bloque loop_for'''
+    '''statement_for : FOR opera_for statement_assign TO const compara_for condicion_for DO bloque aumenta loop_for'''
 
 def p_statement_read(p):
     '''statement_read : READ LPARENT read_1 RPARENT'''
@@ -191,7 +197,8 @@ def p_write_1(p):
     '''write_1 : expression write_instr COMMA write_1
                | STRINGCTE const_str write_instr COMMA write_1
                | expression write_instr
-               | STRINGCTE const_str write_instr'''
+               | STRINGCTE const_str write_instr
+               | ID const_id LSQUARE const RSQUARE'''
 
 def p_statement_return(p):
     '''statement_return : RETURN return_function LPARENT expression RPARENT return_save_quadruple'''
@@ -293,6 +300,27 @@ def siguiente_constante_direccion(const_tipo):
         siguiente_constante_string += 1
     return aux
 
+def siguiente_vector_direccion(const_tipo):
+    global variTipo_actual, constantes, siguiente_vector_entero, siguiente_vector_decimal, siguiente_vector_char
+    aux = 0
+    if const_tipo == 'int':
+        if siguiente_vector_entero > 39999:
+            error('YA NO PUEDE AGREGAR MAS ARREGLOS ENTEROS')
+        aux = siguiente_vector_entero
+        siguiente_vector_entero += 1
+    elif const_tipo == 'float':
+        if siguiente_vector_decimal > 49999:
+            error('YA NO PUEDE AGREGAR MAS ARREGLOS DECIMALES')
+        aux = siguiente_vector_decimal
+        siguiente_vector_decimal += 1
+    elif const_tipo == 'char':
+        if siguiente_vector_char > 59999:
+            error('YA NO PUEDE AGREGAR MAS ARREGLOS CHAR')
+        aux = siguiente_vector_char
+        siguiente_vector_char += 1
+
+    return aux
+
 def p_vars_type(p):
     'vars_type : '
     global tabla_simbolos, funcion_actual, variable_actual, variTipo_actual
@@ -301,6 +329,41 @@ def p_vars_type(p):
         'address':nueva_direccion()
     }
 
+def p_add_memory(p):
+    'add_memory : '
+    global tabla_vectores, variable_actual, funcion_actual
+    if(funcion_actual != '#global'):
+        tabla_vectores[funcion_actual]['vector'][p[-6]] = {
+            '0' : {
+                'type': None,
+                'address': None
+            }
+        }
+        variable_actual = p[-6]
+    else:
+        tabla_vectores['#global']['vector'][p[-6]] = {
+            '0' : {
+                    'type': None,
+                    'address': None
+            }
+        }
+        variable_actual = p[-6]
+    crear_direcciones_vector()
+
+def crear_direcciones_vector():
+    name = variable_actual
+    for key in constantes:
+        maxim = key;
+
+    index = 0
+    while index < int(maxim):
+        if variTipo_actual == 'int':
+            tabla_vectores[funcion_actual]['vector'][name][str(index)] = {
+                'type': 'int',
+                'address': siguiente_vector_direccion('int')
+            }
+        index = index+1
+        
 # ++++++++++++++++  GUARDAR Y REVISAR LOS IDENTIFICADORES GENERADOS  ++++++++++++++
 def type_find(id):
     global tabla_simbolos, funcion_actual
@@ -388,6 +451,14 @@ def p_add_tabla(p):
     else:
         error('NO CONCUERDA {}. EL TIPO NO PUEDE SER ASIGNADO A {}'.format(id_t,res_tipo))
 
+def p_read_index(p):
+    'read_index : '
+    global tabla_vectores
+    for key in constantes:
+        index = key
+    new_dir = tabla_vectores['#global']['vector'][variable_actual][index]['address']
+    valores.append(new_dir)
+
 def p_opera_add(p):
     'opera_add : '
     global operaciones
@@ -400,7 +471,7 @@ def p_term_sumres(p):
 
 def p_term_muldiv(p):
     'term_muldiv : '
-    identificador(['*','/','^'])
+    identificador(['*','//','/','%','^'])
 
 def p_expr_rel(p):
     'expr_rel : '
@@ -616,9 +687,29 @@ def p_opera_for(p):
     global saltos, quadruple
     saltos.append(len(quadruple))
 
+def p_compara_for(p):
+    'compara_for : '
+    global quadruple, valores, variTipo_actual, instruccion_for
+    quad = quadruple[len(quadruple) - 1]
+    val1 = quad[3]
+    instruccion_for = val1
+    val2 = valores.pop()
+    tipo1 = 'int'
+    tipo2 = 'int'
+    resultado = MyRCubo.cubo_ret(tipo1,tipo2,'<=')
+    if resultado != 'Error':
+        variTipo_actual = resultado
+        res = nueva_direccion()
+        quadruple.append(['<=',val1,val2,res])
+        valores.append(res)
+        tipos.append(resultado)
+    else:
+        error('ERROR EN EL CUADRUPLO')
+
 def p_condicion_for(p):
     'condicion_for : '
     global tipos, valores, quadruple, saltos
+    tipos.pop()
     tipo_for = tipos.pop()
     if tipo_for != 'int':
         error('EL TIPO DE VARIABLE NO CORRESPONDE CON LA EVALUACION DE LA CONDICION: {}'.format(tipo_for))
@@ -628,12 +719,42 @@ def p_condicion_for(p):
         quadruple.append(quad)
         saltos.append(len(quadruple)-1)
 
+def p_aumenta(p):
+    'aumenta : '
+    global quadruple, valores, variTipo_actual, instruccion_for
+    quad = quadruple[len(quadruple) - 1]
+    val1 = instruccion_for
+    tipo1 = 'int'
+    val2 = constantes['1']['address']
+    tipo2 = 'int'
+    resultado = MyRCubo.cubo_ret(tipo1,tipo2,'+')
+    if resultado != 'Error':
+        variTipo_actual = resultado
+        res = nueva_direccion()
+        quadruple.append(['+',val1,val2,res])
+        valores.append(res)
+        tipos.append(resultado)
+    else:
+        error('ERROR EN EL CUADRUPLO')
+        
+    quad = quadruple[len(quadruple) - 1]
+    val1 = quad[3]
+    tipo1 = 'int'
+    val2 = quad[1]
+    tipo2 = 'int'
+    op = '='
+    resultado = MyRCubo.cubo_ret(tipo1,tipo2,op)
+    if resultado == True and op == '=':
+        quadruple.append(['=',val1,'-',val2])
+    else:
+        error('NO CONCUERDA {}. EL TIPO NO PUEDE SER ASIGNADO A {}'.format(id_t,res_tipo))
+
 def p_loop_for(p):
     'loop_for : '
     global saltos, quadruple
     fin = saltos.pop()
     back = saltos.pop()
-    quad = ['GOTO','-','-',back]
+    quad = ['GOTO','-','-',back+1]
     quadruple.append(quad)
     quadruple[fin][3] = len(quadruple)
 
@@ -672,7 +793,7 @@ def p_return_save_quadruple(p):
     tipo = tipos.pop()
     tipo_funcion = tabla_simbolos[funcion_actual]['type']
     if tipo == tipo_funcion:
-        quad = ['RETURN','-','-','-',valor]
+        quad = ['RETURN','-','-',valor]
         quadruple.append(quad)
         variable_funcion = tabla_simbolos['#global']['vars'][funcion_actual]['address']
         quadr = ['=',valor,'-',variable_funcion]

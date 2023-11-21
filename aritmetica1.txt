@@ -1,0 +1,32 @@
+%% PROGRAMA DE PRUEBA DE MyR
+%%  - Probal el compilador con aritmética
+
+program aritmetica1;
+
+var
+    int pago, costo, cambio;
+    int x50, x20, x10, x5;
+    int resto;
+
+main() {
+    write("Costo del producto");
+    read(costo);
+
+    write("Pago del cliente");
+    read(pago);
+
+    cambio = pago - costo;
+    write(cambio);
+    x50 = cambio // 50;
+    write("Billetes de 50 pesos",x50);
+    resto = cambio % 50;
+    x20 = resto // 20;
+    write("Billetes de 20 pesos",x20);
+    resto = resto % 20;
+    x10 = resto // 10;
+    write("Monedas de 10 pesos",x10);
+    resto = resto % 10;
+    x5 = resto // 5;
+    write("Monedas de 5 pesos",x5);
+    resto = resto % 5;
+}

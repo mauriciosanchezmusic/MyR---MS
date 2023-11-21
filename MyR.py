@@ -11,6 +11,9 @@ def print_object():
     print('TABLA DE SÍMBOLOS:')
     pp.pprint(MyRParse.tabla_simbolos)
     print('')
+    print('TABLA DE VECTORES:')
+    pp.pprint(MyRParse.tabla_vectores)
+    print('')
     print('TABLA DE CONSTANTES:')
     pp.pprint(MyRParse.constantes)
     print('')
@@ -30,6 +33,7 @@ fileToWrite = nameSplit[0]
 with open(fileToWrite + '.o', 'w') as file:
     save_data = {
         'symbol_table':MyRParse.tabla_simbolos,
+        'vector_table':MyRParse.tabla_vectores,
         'constant_table':MyRParse.constantes,
         'quadruple':MyRParse.quadruple,
     }

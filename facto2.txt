@@ -1,0 +1,21 @@
+%% PROGRAMA DE PRUEBA DE MyR
+%%  - programa para resolver el factorial de un número
+
+program facto1;
+
+var
+    int inicial,numero,i;
+
+main() {
+    inicial = 1;
+
+    write("Factorial de");
+    
+    read(numero);
+    
+    for i = 1 to numero do {
+        inicial = inicial * i;
+    }
+    
+    write(inicial);
+}
