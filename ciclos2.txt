@@ -1,0 +1,13 @@
+%% PROGRAMA DE PRUEBA DE MyR
+%%      Probar el compilador usando el ciclo while
+
+program ciclos1;
+
+var
+    int i,j,x;
+
+main() {
+    for x = 1 to 10 do {
+        write(x);
+    }
+}

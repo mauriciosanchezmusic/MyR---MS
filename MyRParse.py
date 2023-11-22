@@ -2,6 +2,7 @@ import ply.yacc as yacc
 
 from MyRLex import tokens
 import MyRCubo
+import MyRMemory
 
 ####  LISTAS, DICCIONARIOS, TABLAS Y DATOS ESTRUCTURADOS
 
@@ -16,9 +17,7 @@ tabla_simbolos = {
 }
 
 tabla_vectores = {
-    '#global': {
-        'vector': {},
-    }
+    'vector': {},
 }
 
 parametros         = []
@@ -26,33 +25,20 @@ contador_parametro = 0
 funcion_llamada    = ''
 ret_flag           = 0
 
-constantes                  = {}
-siguiente_global_entero     = 1000
-siguiente_global_decimal    = 3000
-siguiente_global_bool       = 5000
-siguiente_global_char       = 7000
-siguiente_entero            = 8000
-siguiente_decimal           = 10000
-siguiente_bool              = 12000
-siguiente_char              = 14000
-siguiente_constante_entera  = 15000
-siguiente_constante_decimal = 17000
-siguiente_constante_char    = 19000
-siguiente_constante_string  = 20000
-siguiente_vector_entero     = 30000
-siguiente_vector_decimal    = 40000
-siguiente_vector_char       = 50000
-
 quadruple = [
     ['START', '-', '-', '-']
 ]
 
+constantes  = {}
 tipos       = []
 valores     = []    
 operaciones = []    
 saltos      = []
 
 instruccion_for = 0
+vector_var = None
+write_vector_index = ''
+vector_size = {}
 
 ####  INSTRUCCIONES GENERALES DE PROGRAMA
 
@@ -116,7 +102,7 @@ def p_statement(p):
 
 def p_statement_assign(p):
     '''statement_assign : ID const_id EQ opera_add expression add_tabla
-                        | ID const_id LSQUARE const read_index RSQUARE EQ opera_add expression add_tabla'''
+                        | ID const_id save_var LSQUARE const RSQUARE EQ opera_add expression add_tabla'''
 
 def p_expression(p):
     '''expression : expr oper_y AND opera_add expression
@@ -198,7 +184,7 @@ def p_write_1(p):
                | STRINGCTE const_str write_instr COMMA write_1
                | expression write_instr
                | STRINGCTE const_str write_instr
-               | ID const_id LSQUARE const RSQUARE'''
+               | ID const_id find_id LSQUARE const change_address RSQUARE write_instr'''
 
 def p_statement_return(p):
     '''statement_return : RETURN return_function LPARENT expression RPARENT return_save_quadruple'''
@@ -228,139 +214,41 @@ def p_vars_name(p):
         variable_actual = p[-1]
 
 # +++++++++++  ASIGNACIÓN DE DIRECCIONES DE MEMORIA Y VARIABLES  +++++++++++++++++++
-def nueva_direccion():
-    global funcion_actual, variTipo_actual, siguiente_global_entero, siguiente_global_decimal, siguiente_global_bool, siguiente_global_char, siguiente_entero, siguiente_decimal, siguiente_bool, siguiente_char
-    aux = 0
-    if funcion_actual == '#global' or funcion_actual == 'main':
-        if variTipo_actual == 'int':
-            if siguiente_global_entero > 2999:
-                error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
-            aux = siguiente_global_entero
-            siguiente_global_entero += 1
-        elif variTipo_actual == 'float':
-            if siguiente_global_decimal > 4999:
-                error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
-            aux = siguiente_global_decimal
-            siguiente_global_decimal += 1
-        elif variTipo_actual == 'bool':
-            if siguiente_global_bool > 6999:
-                error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
-            aux = siguiente_global_bool
-            siguiente_global_bool += 1            
-        elif variTipo_actual == 'char':
-            if siguiente_global_char > 7999:
-                error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
-            aux = siguiente_global_char
-            siguiente_global_char += 1
-    else:
-        if variTipo_actual == 'int':
-            if siguiente_entero > 9999:
-                error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
-            aux = siguiente_entero
-            siguiente_entero += 1
-        elif variTipo_actual == 'float':
-            if siguiente_decimal > 11999:
-                error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
-            aux = siguiente_decimal
-            siguiente_decimal += 1
-        elif variTipo_actual == 'bool':
-            if siguiente_bool > 13999:
-                error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
-            aux = siguiente_bool
-            siguiente_bool += 1
-        elif variTipo_actual == 'char':
-            if siguiente_char > 14999:
-                error('YA NO PUEDE AGREGAR MAS VARIABLES {}'.format(variTipo_actual))
-            aux = siguiente_char
-            siguiente_char += 1
-    return aux
-
-def siguiente_constante_direccion(const_tipo):
-    global variTipo_actual, constantes, siguiente_constante_entera, siguiente_constante_decimal, siguiente_constante_char, siguiente_constante_string
-    aux = 0
-    if const_tipo == 'int':
-        if siguiente_constante_entera > 16999:
-            error('YA NO PUEDE AGREGAR MAS CONSTANTES ENTERAS')
-        aux = siguiente_constante_entera
-        siguiente_constante_entera += 1
-    elif const_tipo == 'float':
-        if siguiente_constante_decimal > 18999:
-            error('YA NO PUEDE AGREGAR MAS CONSTANTES DECIMALES')
-        aux = siguiente_constante_decimal
-        siguiente_constante_decimal += 1
-    elif const_tipo == 'char':
-        if siguiente_constante_char > 19999:
-            error('YA NO PUEDE AGREGAR MAS CONSTANTES CHAR')
-        aux = siguiente_constante_char
-        siguiente_constante_char += 1
-    elif const_tipo == 'string':
-        if siguiente_constante_string > 20999:
-            error('YA NO PUEDE AGREGAR MAS CONSTANTES TIPO STRING')
-        aux = siguiente_constante_string
-        siguiente_constante_string += 1
-    return aux
-
-def siguiente_vector_direccion(const_tipo):
-    global variTipo_actual, constantes, siguiente_vector_entero, siguiente_vector_decimal, siguiente_vector_char
-    aux = 0
-    if const_tipo == 'int':
-        if siguiente_vector_entero > 39999:
-            error('YA NO PUEDE AGREGAR MAS ARREGLOS ENTEROS')
-        aux = siguiente_vector_entero
-        siguiente_vector_entero += 1
-    elif const_tipo == 'float':
-        if siguiente_vector_decimal > 49999:
-            error('YA NO PUEDE AGREGAR MAS ARREGLOS DECIMALES')
-        aux = siguiente_vector_decimal
-        siguiente_vector_decimal += 1
-    elif const_tipo == 'char':
-        if siguiente_vector_char > 59999:
-            error('YA NO PUEDE AGREGAR MAS ARREGLOS CHAR')
-        aux = siguiente_vector_char
-        siguiente_vector_char += 1
-
-    return aux
 
 def p_vars_type(p):
     'vars_type : '
     global tabla_simbolos, funcion_actual, variable_actual, variTipo_actual
     tabla_simbolos[funcion_actual]['vars'][variable_actual] = {
         'type':variTipo_actual,
-        'address':nueva_direccion()
+        'address':MyRMemory.nueva_direccion(variTipo_actual)
     }
 
 def p_add_memory(p):
     'add_memory : '
-    global tabla_vectores, variable_actual, funcion_actual
-    if(funcion_actual != '#global'):
-        tabla_vectores[funcion_actual]['vector'][p[-6]] = {
-            '0' : {
-                'type': None,
-                'address': None
-            }
+    global tabla_vectores, variable_actual
+    tabla_vectores['vector'][p[-6]] = {
+        '0' : {
+            'type': None,
+            'address': None
         }
-        variable_actual = p[-6]
-    else:
-        tabla_vectores['#global']['vector'][p[-6]] = {
-            '0' : {
-                    'type': None,
-                    'address': None
-            }
-        }
-        variable_actual = p[-6]
+    }
+    variable_actual = p[-6]
     crear_direcciones_vector()
 
 def crear_direcciones_vector():
+    global vector_size
     name = variable_actual
     for key in constantes:
         maxim = key;
-
+    vector_size[name] = maxim
+    
     index = 0
     while index < int(maxim):
         if variTipo_actual == 'int':
-            tabla_vectores[funcion_actual]['vector'][name][str(index)] = {
+            new_dir = MyRMemory.siguiente_vector_direccion('int')
+            tabla_vectores['vector'][name][str(index)] = {
                 'type': 'int',
-                'address': siguiente_vector_direccion('int')
+                'address': new_dir
             }
         index = index+1
         
@@ -394,7 +282,7 @@ def p_const_int(p):
     global valores, tipos, constantes, siguiente_constante_entera
     if (p[-1] not in constantes):
         constantes[p[-1]] = {
-            'address': siguiente_constante_direccion('int'),
+            'address': MyRMemory.siguiente_constante_direccion('int'),
             'type': 'int'
         }
     valores.append(constantes[p[-1]]['address'])
@@ -405,7 +293,7 @@ def p_const_float(p):
     global valores, tipos, constantes, siguiente_constante_decimal
     if (p[-1] not in constantes):
         constantes[p[-1]] = {
-            'address': siguiente_constante_direccion('float'),
+            'address': MyRMemory.siguiente_constante_direccion('float'),
             'type': 'float'
         }
     valores.append(constantes[p[-1]]['address'])
@@ -418,7 +306,7 @@ def p_const_char(p):
     const_char = const_char[1:-1]
     if const_char not in constantes:
         constantes[const_char] = {
-            'address': siguiente_constante_direccion('char'),
+            'address': MyRMemory.siguiente_constante_direccion('char'),
             'type': 'char'
         }
     valores.append(constantes[const_char]['address'])
@@ -431,7 +319,7 @@ def p_const_str(p):
     const_str = const_str[1:-1]
     if const_str not in constantes:
         constantes[const_str] = {
-            'address' : siguiente_constante_direccion('string'),
+            'address' : MyRMemory.siguiente_constante_direccion('string'),
             'type' : 'string'
         }
     valores.append(constantes[const_str]['address'])
@@ -451,13 +339,11 @@ def p_add_tabla(p):
     else:
         error('NO CONCUERDA {}. EL TIPO NO PUEDE SER ASIGNADO A {}'.format(id_t,res_tipo))
 
-def p_read_index(p):
-    'read_index : '
-    global tabla_vectores
-    for key in constantes:
-        index = key
-    new_dir = tabla_vectores['#global']['vector'][variable_actual][index]['address']
-    valores.append(new_dir)
+def p_save_var(p):
+    'save_var : '
+    global vector_var
+    idVar = p[-2]
+    vector_var = idVar
 
 def p_opera_add(p):
     'opera_add : '
@@ -509,7 +395,7 @@ def identificador(opera):
             resultado = MyRCubo.cubo_ret(tipo1,tipo2,op)
             if resultado != 'Error':
                 variTipo_actual = resultado
-                res = nueva_direccion()
+                res = MyRMemory.nueva_direccion(variTipo_actual)
                 quadruple.append([op,op1,op2,res])
                 valores.append(res)
                 tipos.append(resultado)
@@ -550,7 +436,7 @@ def p_function_name(p):
     else:
         tabla_simbolos['#global']['vars'][fun_nombre] = {
             'type':variTipo_actual,
-            'address': nueva_direccion()
+            'address': MyRMemory.nueva_direccion(variTipo_actual)
         }
 
     tabla_simbolos[p[-1]] = {
@@ -699,7 +585,7 @@ def p_compara_for(p):
     resultado = MyRCubo.cubo_ret(tipo1,tipo2,'<=')
     if resultado != 'Error':
         variTipo_actual = resultado
-        res = nueva_direccion()
+        res = MyRMemory.nueva_direccion('int')
         quadruple.append(['<=',val1,val2,res])
         valores.append(res)
         tipos.append(resultado)
@@ -725,12 +611,17 @@ def p_aumenta(p):
     quad = quadruple[len(quadruple) - 1]
     val1 = instruccion_for
     tipo1 = 'int'
+    if '1' not in constantes:
+        constantes['1'] = {
+            'address': MyRMemory.siguiente_constante_direccion('int'),
+            'type': 'int'
+        }
     val2 = constantes['1']['address']
-    tipo2 = 'int'
+    tipo2 = constantes['1']['type']
     resultado = MyRCubo.cubo_ret(tipo1,tipo2,'+')
     if resultado != 'Error':
         variTipo_actual = resultado
-        res = nueva_direccion()
+        res = MyRMemory.nueva_direccion('int')
         quadruple.append(['+',val1,val2,res])
         valores.append(res)
         tipos.append(resultado)
@@ -767,6 +658,16 @@ def p_read_instr(p):
     quadruple.append(quad)
 
 # +++++++++++++++ INSTRUCCIONES DE ESCRITURA  +++++++++++++++++++++++
+def p_find_id(p):
+    'find_id : '
+    write_vector_index = p[-2]
+    
+def p_change_address(p):
+    'change_address : '
+    global valores
+    index = valores[-1]
+    vari_name = valores[-2]
+
 def p_write_instr(p):
     'write_instr : '
     global quadruple, valores

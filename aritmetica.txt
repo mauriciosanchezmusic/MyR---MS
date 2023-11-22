@@ -7,10 +7,11 @@ var
     int i,j,p;
     float valor;
 
-
 main() {
+    write("valor de p es");
     read(p);
     j = p * 2;
+    write("Resultado de j es", j);
     valor = j / p;
-    write(j, valor);
+    write("Resultado de valor es",valor);
 }

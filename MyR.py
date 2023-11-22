@@ -4,6 +4,7 @@ sys.path.insert(0,"../..")
 
 import MyRLex
 import MyRCubo
+import MyRMemory
 import MyRParse
 
 def print_object():

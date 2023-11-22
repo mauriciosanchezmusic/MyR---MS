@@ -1,0 +1,33 @@
+%% PROGRAMA DE PRUEBA DE MyR
+%%  - Programa para probar el compilador y máquina virtual usando funciones
+
+program fun1;
+
+var
+    int a1,a2,a3,a4;
+    float res;
+
+funcion void leerDatos() {
+    write("Escribir los 4 datos, oprimiendo enter despues de cada valor");
+    read(a1);
+    read(a2);
+    read(a3);
+    read(a4);
+}
+
+funcion void media() {
+    
+    res = (a1 + a2 + a3 + a4) / 2;
+}
+
+main() {
+    var
+        float mean;
+    
+    leerDatos();
+    write("Datos escritos");
+    write(a1,a2,a3,a4);
+
+    media();
+    write(res);
+}
