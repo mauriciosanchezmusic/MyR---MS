@@ -120,7 +120,7 @@ def p_expr_aux(p):
                 | expr_sumres expr_rel SIM opera_add expr_aux
                 | expr_sumres expr_rel NE opera_add expr_aux
                 | expr_sumres expr_rel '''
-    
+
 def p_expr_sumres(p):
     '''expr_sumres : expr_muldiv term_sumres PLUS opera_add expr_sumres
                    | expr_muldiv term_sumres MINUS opera_add expr_sumres
