@@ -1,0 +1,26 @@
+%% PROGRAMA DE PRUEBA DE MyR
+%%  - Hacer las pruebas de compilación para funciones recursivas
+
+program rec1;
+
+var int n;
+
+funcion int factorial(int y) {
+
+    while (y > 0) do {
+        n = n * y;
+        factorial(y - 1);
+    }
+        
+    return(n);
+}
+
+main() {
+    var int x;
+    write("factorial de ");
+    read(x);
+
+    n = 1;
+    factorial(x);
+    write(n);
+}

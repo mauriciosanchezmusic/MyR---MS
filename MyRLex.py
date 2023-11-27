@@ -20,6 +20,12 @@ reservadas = {
     'to':'TO',
     'while':'WHILE',
     'do':'DO',
+    ## STATISTICS
+    'media':'MEDIA',
+    'mediana':'MEDIANA',
+    'moda':'MODA',
+    'varianza':'VARIANZA',
+    'esdev':'ESDEV',
     ## RESERVED FOR GENERAL USE
     'newline':'NEWLINE',
     'read':'READ',
@@ -39,7 +45,7 @@ tokens = list(reservadas.values()) + [
 t_PLUS     = r'\+'
 t_MINUS    = r'-'
 t_TIMES    = r'\*'
-t_DIVENT   = r'//'
+t_DIVENT   = r'\#'
 t_DIVIDE   = r'/'
 t_MODULE   = r'%'
 t_POWER    = r'\^'

@@ -4,8 +4,8 @@
 program fun1;
 
 var
-    int a,b,c;
-    float res, aux1, aux2;
+    float a,b,c;
+    float res, aux1, aux2, r1, r2;
 
 funcion void leerDatos() {
     write("Escribir los 3 datos, oprimiendo enter despues de cada valor");
@@ -15,11 +15,22 @@ funcion void leerDatos() {
 }
 
 funcion void raiz() {
-    aux1 = (0 - 1) * b / (2 * a);
+    aux1 = b / (2 * a);
+    aux2 = b ^ 2 - 4 * a * c;
+
+    if (aux2 >= 0) then {
+	write("Raiz 1");
+	r1 = aux1 + aux2 ^ 0.5;
+	write(r1,"Raiz 2");
+        r2 = aux1 - aux2;
+	write(r2);
+    }
+    else {
+	write("Raices complejas");
+    }
 }
 
 main() {
     leerDatos();
     raiz();
-    write(aux1);
 }

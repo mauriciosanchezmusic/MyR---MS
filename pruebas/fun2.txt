@@ -15,9 +15,9 @@ funcion void leerDatos() {
     read(a4);
 }
 
-funcion void media() {
+funcion void mid() {
     
-    res = (a1 + a2 + a3 + a4) / 2;
+    res = (a1 + a2 + a3 + a4) / 4.0;
 }
 
 main() {
@@ -28,6 +28,7 @@ main() {
     write("Datos escritos");
     write(a1,a2,a3,a4);
 
-    media();
+    mid();
+    write("Media");
     write(res);
 }

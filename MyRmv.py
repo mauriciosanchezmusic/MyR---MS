@@ -1,4 +1,5 @@
 import sys
+import statistics
 
 ## +++++++++++++  LEER ARCHIVO OBJETO GENERADO POR COMPILADOR  +++++++++++
 nameFile = sys.argv[1]
@@ -19,11 +20,20 @@ memoriaV       = {}
 const_finales  = {}
 funcion_actual = 'main'
 
+lista_vectores = [];
+
 ## ++++++++++++  INSTRUCCIONES PARA TRANSPONER LA TABLA DE CONSTANTES
 for key, val in const_in.items():
     const_finales[val['address']] = key
 
 global actual
+
+## ++++++++++++++ INSTRUCCIONES PARA CREAR LISTA  ++++++++++++++++++++++++
+def crear_lista(name, addr, qty):
+    for direc in range(0, qty):
+        address = addr + direc
+        valor = leer_mem(address)
+        lista_vectores.append(valor)
 
 ## ++++++++++++ INSTRUCCIONES PARA LEER LOS VALORES EN LA MEMORIA
 def leer_mem(direccion, prof=-1):
@@ -116,7 +126,7 @@ while actual[-1] != -1:
         res = val1 * val2
         escribir_mem(quadruple_in[actual[-1]][3], res)
         actual[-1] = actual[-1]+1
-    elif quadruple_in[actual[-1]][0] == '//':
+    elif quadruple_in[actual[-1]][0] == '#':
         val1 = leer_mem(quadruple_in[actual[-1]][1])
         val2 = leer_mem(quadruple_in[actual[-1]][2])
         if val2 == 0:
@@ -235,6 +245,52 @@ while actual[-1] != -1:
         escribir_mem(quadruple_in[actual[-1]][3], res)
         actual[-1] = actual[-1]+1
 
+    # operaciones estadísticas
+    elif quadruple_in[actual[-1]][0] == 'MEDIA':
+        var_name = quadruple_in[actual[-1]][1]
+        var_dir = quadruple_in[actual[-1]][2]
+        vec_length = quadruple_in[actual[-1]][3]
+        crear_lista(var_name,var_dir,vec_length)
+        res = statistics.mean(lista_vectores)
+        print(res)
+        actual[-1] = actual[-1]+1
+
+    elif quadruple_in[actual[-1]][0] == 'MEDIANA':
+        var_name = quadruple_in[actual[-1]][1]
+        var_dir = quadruple_in[actual[-1]][2]
+        vec_length = quadruple_in[actual[-1]][3]
+        crear_lista(var_name,var_dir,vec_length)
+        res = statistics.median(lista_vectores)
+        print(res)
+        actual[-1] = actual[-1]+1
+
+    elif quadruple_in[actual[-1]][0] == 'MODA':
+        var_name = quadruple_in[actual[-1]][1]
+        var_dir = quadruple_in[actual[-1]][2]
+        vec_length = quadruple_in[actual[-1]][3]
+        crear_lista(var_name,var_dir,vec_length)
+        res = statistics.mode(lista_vectores)
+        print(res)
+        actual[-1] = actual[-1]+1
+
+    elif quadruple_in[actual[-1]][0] == 'VARIANZA':
+        var_name = quadruple_in[actual[-1]][1]
+        var_dir = quadruple_in[actual[-1]][2]
+        vec_length = quadruple_in[actual[-1]][3]
+        crear_lista(var_name,var_dir,vec_length)
+        res = statistics.variance(lista_vectores)
+        print(res)
+        actual[-1] = actual[-1]+1
+
+    elif quadruple_in[actual[-1]][0] == 'ESDEV':
+        var_name = quadruple_in[actual[-1]][1]
+        var_dir = quadruple_in[actual[-1]][2]
+        vec_length = quadruple_in[actual[-1]][3]
+        crear_lista(var_name,var_dir,vec_length)
+        res = statistics.stdev(lista_vectores)
+        print(res)
+        actual[-1] = actual[-1]+1
+
     # Instrucciones para manejar los saltos en contador de programa
     elif quadruple_in[actual[-1]][0] == 'GOTOFUN':
         val1 = leer_mem(quadruple_in[actual[-1]][1])
@@ -254,9 +310,9 @@ while actual[-1] != -1:
         actual.append(tabla_simbolos_in[funcion_actual]['start'])
     elif quadruple_in[actual[-1]][0] == 'PARAMETER':
         dir_or = quadruple_in[actual[-1]][2]
-        val_or = leer_mem(dir_or, -2)
+        val_or = leer_mem(dir_or)
         dir_des = quadruple_in[actual[-1]][3]
-        escribir_mem(dir_des, dir_or)
+        escribir_mem(dir_des, val_or)
         actual[-1] = actual[-1]+1
     elif quadruple_in[actual[-1]][0] == 'RETURN':
         dir_t = tabla_simbolos_in['#global']['vars'][funcion_actual]['address']

@@ -1,0 +1,26 @@
+%% PROGRAMA DE PRUEBA DE MyR
+%%  - Programa para verificar el compilador y máquina virtual usando funciones con retorno
+
+program funret1;
+
+funcion int sumavars(int num) {
+    var int x, res;
+
+    write("Otro operando");
+    read(x);
+
+    res = num + x;
+    return(res);
+}
+
+main() {
+    var int n, w;
+
+    write("Numero a sumar");
+    read(n);
+    sumavars(n);
+
+    write(sumavars);
+    
+}
+

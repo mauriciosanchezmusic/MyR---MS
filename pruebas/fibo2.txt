@@ -1,0 +1,22 @@
+%% PROGRAMA DE PRUEBA DE MyR
+%%  - programa para llegar a la secuencia el fibonacci de cierto elemento recursivo
+
+program fibo2;
+
+var
+    int a, x;
+
+funcion int fibonacci(int num) {
+  if (num <= 1) then {
+    return num;
+  }
+  return fibonacci(num - 1) + fibonacci(num - 2);
+}
+
+main() {
+    write("Fibonacci");
+    read(a);
+    for x = 0 to a do {
+        write(fibonacci(a))
+    }
+}

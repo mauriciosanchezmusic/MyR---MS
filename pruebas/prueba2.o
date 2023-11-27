@@ -1,1 +1,0 @@
-{'symbol_table': {'#global': {'vars': {'i': {'type': 'int', 'address': 1000}, 'j': {'type': 'int', 'address': 1001}}}}, 'vector_table': {'vector': {}}, 'constant_table': {}, 'quadruple': [['START', '-', '-', '-']]}

@@ -1,0 +1,48 @@
+%%  PROGRAMA PARA VERIFICAR MyR
+%%   - Verificar el compilador y máquina virtual en operaciones de estadística
+
+program stad1;
+
+var
+    int vec[10];
+
+funcion void leer_vec() {
+    write("Escribir los datos enteros oprimiendo enter despues de cada valor");
+    
+    vec[0] = 2;
+    vec[1] = 5;
+    vec[2] = 6;
+    vec[3] = 9;
+    vec[4] = 7;
+    vec[5] = 10;
+    vec[6] = 1;
+    vec[7] = 3;
+    vec[8] = 3;
+    vec[9] = 7;
+}
+
+funcion void write_vec() {
+    write("Los datos introducidos son");
+    write(vec[0], vec[1], vec[2], vec[3], vec[4]);
+    write(vec[5], vec[6], vec[7], vec[8], vec[9]);
+}
+
+main() {
+    leer_vec();
+    write_vec();
+
+    write("Media de los datos escritos");
+    media(vec);
+
+    write("Mediana de los datos escritos");
+    mediana(vec);
+
+    write("Moda en los datos escritos");
+    moda(vec);
+
+    write("Varianza de los datos escritos");
+    varianza(vec);
+
+    write("Desviación estandar de los datos");
+    esdev(vec);
+}

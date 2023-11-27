@@ -5,13 +5,14 @@ program ciclos1;
 
 var
     int i,j;
-    bool f;
+    char f;
 
 main() {
+    i=5;
     j = 10;
-    read(i);
+    read(f);
     while(i < j) do {
-        write(i);
+        write(f);
         i = i + 1;
     }
 }

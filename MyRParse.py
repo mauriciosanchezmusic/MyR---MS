@@ -34,11 +34,14 @@ tipos       = []
 valores     = []    
 operaciones = []    
 saltos      = []
+vari_vector = []
 
 instruccion_for = 0
 vector_var = None
 write_vector_index = ''
 vector_size = {}
+
+list_vec = ()
 
 ####  INSTRUCCIONES GENERALES DE PROGRAMA
 
@@ -98,14 +101,16 @@ def p_statement(p):
                  | statement_for
                  | statement_read SEMI
                  | statement_write SEMI
-                 | statement_return SEMI'''
+                 | statement_return SEMI
+                 | statement_statistics SEMI'''
 
 def p_statement_assign(p):
-    '''statement_assign : ID const_id EQ opera_add expression add_tabla
-                        | ID const_id save_var LSQUARE const RSQUARE EQ opera_add expression add_tabla'''
+    '''statement_assign : ID const_id LSQUARE const save_var RSQUARE EQ opera_add expression add_tabla
+                        | ID const_id EQ opera_add expression add_tabla'''
 
 def p_expression(p):
-    '''expression : expr oper_y AND opera_add expression
+    '''expression : ID const_id LSQUARE const save_var RSQUARE
+                  | expr oper_y AND opera_add expression
                   | expr oper_y '''
 
 def p_expr(p):
@@ -120,7 +125,7 @@ def p_expr_aux(p):
                 | expr_sumres expr_rel SIM opera_add expr_aux
                 | expr_sumres expr_rel NE opera_add expr_aux
                 | expr_sumres expr_rel '''
-
+    
 def p_expr_sumres(p):
     '''expr_sumres : expr_muldiv term_sumres PLUS opera_add expr_sumres
                    | expr_muldiv term_sumres MINUS opera_add expr_sumres
@@ -183,11 +188,17 @@ def p_write_1(p):
     '''write_1 : expression write_instr COMMA write_1
                | STRINGCTE const_str write_instr COMMA write_1
                | expression write_instr
-               | STRINGCTE const_str write_instr
-               | ID const_id find_id LSQUARE const change_address RSQUARE write_instr'''
+               | STRINGCTE const_str write_instr'''
 
 def p_statement_return(p):
     '''statement_return : RETURN return_function LPARENT expression RPARENT return_save_quadruple'''
+
+def p_statement_statistics(p):
+    '''statement_statistics : MEDIA LPARENT const read_arg_mean RPARENT
+                            | MEDIANA LPARENT const read_arg_median RPARENT
+                            | MODA LPARENT const read_arg_mode RPARENT
+                            | VARIANZA LPARENT const read_arg_varianza RPARENT
+                            | ESDEV LPARENT const read_arg_esdev RPARENT'''
 
 ####  FUNCIONES DE CONTROL
 # +++++++++++  TIPOS DE MEMORIAS  ++++++++++++++++++
@@ -341,9 +352,14 @@ def p_add_tabla(p):
 
 def p_save_var(p):
     'save_var : '
-    global vector_var
-    idVar = p[-2]
-    vector_var = idVar
+    global valores
+    val = valores.pop()
+    for key, vals in constantes.items():
+        for address, direccion in vals.items():
+            if direccion == val:
+                index = key
+    vari = tabla_vectores['vector'][variable_actual][index]['address']
+    valores.append(vari)
 
 def p_opera_add(p):
     'opera_add : '
@@ -357,7 +373,7 @@ def p_term_sumres(p):
 
 def p_term_muldiv(p):
     'term_muldiv : '
-    identificador(['*','//','/','%','^'])
+    identificador(['*','#','/','%','^'])
 
 def p_expr_rel(p):
     'expr_rel : '
@@ -501,7 +517,8 @@ def p_revisar_parametro(p):
     for i in range(len(parametros)):
         if parametros[i][0] == funcion_llamada:
             funcion_parametros += 1
-    if contador_parametro < funcion_parametros:
+            contador_parametro -= 1
+    if contador_parametro <= funcion_parametros:
         tipo_parametros = parametros[contador_parametro][1]
         direccion = parametros[contador_parametro][2]
         if tipo_argumento == tipo_parametros:
@@ -649,6 +666,52 @@ def p_loop_for(p):
     quadruple.append(quad)
     quadruple[fin][3] = len(quadruple)
 
+# +++++++++++++++++  INSTRUCCIONES DE ESTADÍSTICA ++++++++++
+def p_read_arg_mean(p):
+    'read_arg_mean : '
+    global valores, variable_actual, variTipo_actual
+    var_name = variable_actual
+    length = len(tabla_vectores['vector'][variable_actual])
+    var_dir = tabla_vectores['vector'][var_name]['0']['address']
+    quad = ['MEDIA',var_name,var_dir,length]
+    quadruple.append(quad)
+
+def p_read_arg_median(p):
+    'read_arg_median : '
+    global valores, variable_actual, variTipo_actual
+    var_name = variable_actual
+    length = len(tabla_vectores['vector'][variable_actual])
+    var_dir = tabla_vectores['vector'][var_name]['0']['address']
+    quad = ['MEDIANA',var_name,var_dir,length]
+    quadruple.append(quad)
+
+def p_read_arg_mode(p):
+    'read_arg_mode : '
+    global valores, variable_actual, variTipo_actual
+    var_name = variable_actual
+    length = len(tabla_vectores['vector'][variable_actual])
+    var_dir = tabla_vectores['vector'][var_name]['0']['address']
+    quad = ['MODA',var_name,var_dir,length]
+    quadruple.append(quad)
+
+def p_read_arg_varianza(p):
+    'read_arg_varianza : '
+    global valores, variable_actual, variTipo_actual
+    var_name = variable_actual
+    length = len(tabla_vectores['vector'][variable_actual])
+    var_dir = tabla_vectores['vector'][var_name]['0']['address']
+    quad = ['VARIANZA',var_name,var_dir,length]
+    quadruple.append(quad)
+
+def p_read_arg_esdev(p):
+    'read_arg_esdev : '
+    global valores, variable_actual, variTipo_actual
+    var_name = variable_actual
+    length = len(tabla_vectores['vector'][variable_actual])
+    var_dir = tabla_vectores['vector'][var_name]['0']['address']
+    quad = ['ESDEV',var_name,var_dir,length]
+    quadruple.append(quad)
+
 # +++++++++++++++++  INSTRUCCIONES DE LECTURA  ++++++++++++++++
 def p_read_instr(p):
     'read_instr : '
@@ -658,15 +721,6 @@ def p_read_instr(p):
     quadruple.append(quad)
 
 # +++++++++++++++ INSTRUCCIONES DE ESCRITURA  +++++++++++++++++++++++
-def p_find_id(p):
-    'find_id : '
-    write_vector_index = p[-2]
-    
-def p_change_address(p):
-    'change_address : '
-    global valores
-    index = valores[-1]
-    vari_name = valores[-2]
 
 def p_write_instr(p):
     'write_instr : '
