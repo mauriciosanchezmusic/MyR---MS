@@ -1,3 +1,6 @@
+##Archivo para leer un archivo objeto generado por un compilador, asignar y gestionar la memoria, y 
+##ejecutar las instrucciones especificadas en los cuádruplos
+
 import sys
 import statistics
 
@@ -12,7 +15,7 @@ with open(nameFile, 'r') as file:
     quadruple_in = entrada['quadruple']
     const_in = entrada['constant_table']
 
-## ++++++++++++  LEER Y ASIGNAR MEMORIAS PARA DIRECCIONES LOCALES Y GLOBALES
+## ++++++++++++  LEER Y ASIGNAR MEMORIAS PARA DIRECCIONES LOCALES Y GLOBALES. INICIALIZA
 global memoriaG, memoriaL, memoriaV, const_finales, funcion_actual
 memoriaG       = {}
 memoriaL       = []
@@ -22,7 +25,7 @@ funcion_actual = 'main'
 
 lista_vectores = [];
 
-## ++++++++++++  INSTRUCCIONES PARA TRANSPONER LA TABLA DE CONSTANTES
+## ++++++++++++  INSTRUCCIONES PARA TRANSPONER LA TABLA DE CONSTANTES --FACILITAR ACCESO
 for key, val in const_in.items():
     const_finales[val['address']] = key
 
@@ -341,3 +344,18 @@ while actual[-1] != -1:
 ## ++++++++++++++  INSTRUCCIONES PARA EL MANEJO DE ERRORES  ++++++++++++++
 def error(msg):
     print(msg)
+
+
+##ERRORES
+# 1: write simbolos especiales: No se pueden escribir símbolos especiales y que también están 
+# entre los tokens y reservados.
+
+# 2: read numeros negativos o igual a 0: No se puede utilizar los números negativos a menos que 
+# en la programación del programa de texto se escriba (0 - 1) * variable, para convertirla en -variable.
+
+# 3: funciones return recursividad: Cuando llamas una función dentro de la misma función, 
+# no es necesario el return en la llamada
+
+# 4: asignacion de vectores en read: la asignación de valores a vectores en read no funciona. 
+# La asignación se deberá hacer desde el archivo txt.
+

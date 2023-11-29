@@ -1,0 +1,48 @@
+%% PROGRAMA DE PRUEBA DE MyR
+%%  - programa para llegar a la secuencia el fibonacci de cierto elemento
+
+program fibo1;
+
+var
+    int i,x,y,z;
+    int a;
+
+funcion void fibo(int k) {
+    x = 0;
+    y = 1;
+    z = 1;
+    if (k==1) then {
+        write(x);
+    }
+    if (k==2) then {
+        write (x);
+        write (y);
+    }
+    if (k==3) then {
+        write (x);
+        write (y);
+        write (y);
+    }
+    else {
+        write (x);
+        write (y);
+        write (y);
+        x=1;
+        for i = 4 to k do {
+            z = x+y;
+            write(z);
+            x = y;
+            y = z;
+    }
+
+    }
+    
+}
+
+main() {
+    write("Cuantos Fibonacci");
+    write("Escribe un num mayor a 0");
+    read(a);
+    write("IIIIIIIIIIIIIIIIIIIIII");
+    fibo(a);
+}

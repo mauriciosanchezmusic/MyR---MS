@@ -4,7 +4,7 @@ from MyRLex import tokens
 import MyRCubo
 import MyRMemory
 
-####  LISTAS, DICCIONARIOS, TABLAS Y DATOS ESTRUCTURADOS
+####  LISTAS[], DICCIONARIOS{}, TABLAS Y DATOS ESTRUCTURADOS
 
 funcion_actual = '#global'
 variable_actual = None
@@ -44,7 +44,7 @@ vector_size = {}
 list_vec = ()
 
 ####  INSTRUCCIONES GENERALES DE PROGRAMA
-
+####  REGLAS DE PRODUCCION
 start = 'programa'
 
 def p_programa(p):
@@ -199,6 +199,8 @@ def p_statement_statistics(p):
                             | MODA LPARENT const read_arg_mode RPARENT
                             | VARIANZA LPARENT const read_arg_varianza RPARENT
                             | ESDEV LPARENT const read_arg_esdev RPARENT'''
+
+#### PUNTOS NEURALGICOS
 
 ####  FUNCIONES DE CONTROL
 # +++++++++++  TIPOS DE MEMORIAS  ++++++++++++++++++

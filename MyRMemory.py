@@ -1,3 +1,5 @@
+##REGLAS PARA ASIGNAR DIRECCIONES
+##MAPEO DE DIRECCIONES
 import sys
 import MyRParse
 
