@@ -158,6 +158,12 @@ Para el uso de vectores, primero necesitamos declarar nuestro tipo de vector + u
 ``    vec[8] = 3;``
 ``    vec[9] = 7;``
 
+A su vez se cuenta con metodos para ordenar un vector:
+* ordenza: Ordenar de mayor a menor un vector;
+  ``ordenza(vec);``
+* ordenza: Ordenar de menor a mayor un vector;
+  ``ordenaz(vec);``
+
 ***
 ### ESTADISTICOS
 Se agregaron funciones integradas al programa para uso de vectores destinadas al calculo estadistico de procedimientos simples.
