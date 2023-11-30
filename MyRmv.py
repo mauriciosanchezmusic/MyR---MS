@@ -98,7 +98,7 @@ def escribir_mem(direccion, valor, prof=-1):
     else:
         memoriaG[dir_t] = valor
 
-## ++++++++++++  MANEJO DE LAS INSTRUCCIONES DEL COMPILADOR
+## ++++++++++++  MANEJO DE LAS INSTRUCCIONES DEL COMPILADOR ## NEW
 actual = [0]
 while actual[-1] != -1:
     # Leer el quadruple
@@ -292,6 +292,26 @@ while actual[-1] != -1:
         crear_lista(var_name,var_dir,vec_length)
         res = statistics.stdev(lista_vectores)
         print(res)
+        actual[-1] = actual[-1]+1
+
+    # Operaciones matemáticas
+    elif quadruple_in[actual[-1]][0] == 'ORDENAZ':
+        var_name = quadruple_in[actual[-1]][1]
+        var_dir = quadruple_in[actual[-1]][2]
+        vec_length = quadruple_in[actual[-1]][3]
+        crear_lista(var_name,var_dir,vec_length)
+        lista_vectores.sort()
+        print(lista_vectores)
+        actual[-1] = actual[-1]+1
+
+    elif quadruple_in[actual[-1]][0] == 'ORDENZA':
+        var_name = quadruple_in[actual[-1]][1]
+        var_dir = quadruple_in[actual[-1]][2]
+        vec_length = quadruple_in[actual[-1]][3]
+        crear_lista(var_name,var_dir,vec_length)
+        lista_vectores.sort()
+        lista_vectores.reverse()
+        print(lista_vectores)
         actual[-1] = actual[-1]+1
 
     # Instrucciones para manejar los saltos en contador de programa

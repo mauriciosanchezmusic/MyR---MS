@@ -20,7 +20,10 @@ reservadas = {
     'to':'TO',
     'while':'WHILE',
     'do':'DO',
-    ## STATISTICS
+    ## STATISTICS AND MATH
+    ## NEW
+    'ordenaz':'ORDENAZ',
+    'ordenza':'ORDENZA',
     'media':'MEDIA',
     'mediana':'MEDIANA',
     'moda':'MODA',

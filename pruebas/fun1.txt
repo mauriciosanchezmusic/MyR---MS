@@ -15,7 +15,7 @@ funcion void leerDatos() {
     read(a4);
 }
 
-funcion void media() {
+funcion void mean() {
     res = (a1 + a2 + a3 + a4) / 2;
 }
 
@@ -23,7 +23,7 @@ main() {
     leerDatos();
     write("Resultado");
     write(a1,a2,a3,a4);
-    media();
+    mean();
     write("Media de datos");
     write(res);
 }

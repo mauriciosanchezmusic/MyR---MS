@@ -1,0 +1,26 @@
+%% PROGRAMA DE MyR
+%%  - Programa para ordenar
+
+program orden1;
+
+var
+    int x[10];
+
+funcion void datosx() {
+    x[0] = 5;
+    x[1] = 7;
+    x[2] = 2;
+    x[3] = 8;
+    x[4] = 1;
+    x[5] = 10;
+    x[6] = 11;
+    x[7] = 3;
+    x[8] = 15;
+    x[9] = 6;
+}
+
+main() {
+    datosx();
+    %% de menor a mayor
+    ordenaz(x);
+}

@@ -102,7 +102,8 @@ def p_statement(p):
                  | statement_read SEMI
                  | statement_write SEMI
                  | statement_return SEMI
-                 | statement_statistics SEMI'''
+                 | statement_statistics SEMI
+                 | statement_math SEMI'''
 
 def p_statement_assign(p):
     '''statement_assign : ID const_id LSQUARE const save_var RSQUARE EQ opera_add expression add_tabla
@@ -199,9 +200,11 @@ def p_statement_statistics(p):
                             | MODA LPARENT const read_arg_mode RPARENT
                             | VARIANZA LPARENT const read_arg_varianza RPARENT
                             | ESDEV LPARENT const read_arg_esdev RPARENT'''
-
+##NEW
+def p_statement_math(p):
+    '''statement_math : ORDENAZ LPARENT const read_arg_sort RPARENT
+                      | ORDENZA LPARENT const read_arg_reverse RPARENT'''
 #### PUNTOS NEURALGICOS
-
 ####  FUNCIONES DE CONTROL
 # +++++++++++  TIPOS DE MEMORIAS  ++++++++++++++++++
 def p_loType(p):
@@ -712,6 +715,25 @@ def p_read_arg_esdev(p):
     length = len(tabla_vectores['vector'][variable_actual])
     var_dir = tabla_vectores['vector'][var_name]['0']['address']
     quad = ['ESDEV',var_name,var_dir,length]
+    quadruple.append(quad)
+
+# +++++++++++++++++  INSTRUCCIONES DE MATEMÁTICAS NEW++++++++++++++++
+def p_read_arg_sort(p):
+    'read_arg_sort : '
+    global valores, variable_actual, variTipo_actual
+    var_name = variable_actual
+    length = len(tabla_vectores['vector'][variable_actual])
+    var_dir = tabla_vectores['vector'][var_name]['0']['address']
+    quad = ['ORDENAZ',var_name,var_dir,length]
+    quadruple.append(quad)
+
+def p_read_arg_reverse(p):
+    'read_arg_reverse : '
+    global valores, variable_actual, variTipo_actual
+    var_name = variable_actual
+    length = len(tabla_vectores['vector'][variable_actual])
+    var_dir = tabla_vectores['vector'][var_name]['0']['address']
+    quad = ['ORDENZA',var_name,var_dir,length]
     quadruple.append(quad)
 
 # +++++++++++++++++  INSTRUCCIONES DE LECTURA  ++++++++++++++++
