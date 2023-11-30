@@ -1,0 +1,29 @@
+%%  PROGRAMA DE PRUEBAS DE MyR
+%%  - Hacer las pruebas de compilación y máquina virtual de fibonacci
+
+program fibona1;
+
+var int n, aux1, aux2, num;
+
+funcion int fibo(int x) {
+
+    if (x < num) then {
+        write(x);
+        x = aux1 + aux2;
+        aux1 = aux2;
+        aux2 = x;
+        fibo(x);
+    }
+
+    return(n);
+}
+
+main() {
+    write("fibonacci de");
+    read(num);
+
+    aux1 = 0;
+    aux2 = 1;
+    n = 1;
+    fibo(n);
+}
