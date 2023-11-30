@@ -1,7 +1,7 @@
 %% PROGRAMA DE MyR
 %%  - Programa para ordenar
 
-program orden1;
+program orden2;
 
 var
     int x[10];
